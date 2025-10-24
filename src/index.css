@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;800&display=swap');
+
+:root{
+  /* สี/ตัวแปร */
+  --bg: #f6f4f5;            /* สีพื้นหลังทั้งหน้า (ให้เต็มจอ) */
+  --soft: #fdf0f5;          /* ชมพูอ่อนของแถบใหญ่ */
+  --stroke: #ebe7ec;        /* สีเส้นขอบ */
+  --ink: #121416;           /* ตัวอักษรหลัก */
+  --muted: #6e7279;         /* ตัวอักษรรอง */
+  --black: #111;            /* ปุ่มดำ */
+  --radius: 16px;           /* มุมโค้งการ์ด */
+  --shadow: 0 8px 28px rgba(13,15,18,.08);
+}
+
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  font-family:"Sarabun", system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial;
+  color:var(--ink);
+  background:var(--bg); /* <<< ทำให้ “เต็มจอ” */
+}
+
+/* คอนเทนเนอร์กลาง (ความกว้างตามภาพ) */
+.container{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ยูทิลิตี้ */
+.card{background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;border:1px solid var(--stroke);background:#fff;font-weight:600;cursor:pointer}
+.btn-dark{background:var(--black);color:#fff;border-color:var(--black)}
+.btn-ghost{background:#fff}
+.btn-pill{border-radius:999px}
+.input{width:100%;border:1px solid var(--stroke);border-radius:12px;padding:12px 14px;font-size:14px;outline:none;background:#fff}
+.input:focus{border-color:#d6d1d8;box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+.muted{color:var(--muted)}
+.center{text-align:center}
+
+/* แถบพื้นหลังชมพูอ่อนแบบเต็มจอ */
+.section-soft{background:var(--soft);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
+.section{padding:44px 0}
+
+/* ชื่อส่วนด้านล่างรูป */
+.section-title{font-weight:800;font-size:22px;margin:18px 0 10px}

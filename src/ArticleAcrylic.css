@@ -1,0 +1,51 @@
+/* ===== Theme (scoped) ===== */
+.nf{
+    --text:#101828; --muted:#667085; --brand:#ff6b98; --stroke:#efe8f4;
+    --soft:#fff7fa; --shadow:0 18px 48px rgba(255,107,152,.18), 0 6px 18px rgba(16,24,40,.06);
+    --radius:20px;
+    color:var(--text);
+    font-family:Poppins,sans-serif;
+    background:linear-gradient(180deg,#fff,#fff7fa);
+  }
+  .nf a{text-decoration:none;color:inherit}
+  .nf .nf-container{width:min(900px,92%);margin:auto}
+  
+  /* Navbar */
+  .nf .nf-nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--stroke);box-shadow:var(--shadow)}
+  .nf .nf-nav__in{height:70px;display:flex;align-items:center;justify-content:space-between}
+  .nf .nf-menu a{padding:10px 14px;border-radius:999px;margin-left:8px;font-weight:500}
+  .nf .nf-menu a:hover{background:var(--soft)}
+  .nf .nf-menu a.active{background:var(--brand);color:#fff}
+  .nf .nf-brand{font-weight:700}
+  
+  /* Hero */
+  .nf .nf-hero{padding:36px 0 18px;text-align:center}
+  .nf .nf-hero h1{margin:10px 0;font-size:32px}
+  .nf .nf-meta{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+  .nf .nf-cover{width:100%;border-radius:var(--radius);margin:0 auto 24px;box-shadow:var(--shadow)}
+  
+  /* Article */
+  .nf .nf-article{background:#fff;border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);line-height:1.75}
+  .nf .nf-article h2{margin-top:28px;color:var(--brand)}
+  .nf .nf-article img{max-width:100%;border-radius:12px;margin:16px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+  
+  /* Highlight */
+  .nf .nf-tip,.nf .nf-warn{border-left:5px solid; padding:14px 16px;margin:18px 0;border-radius:12px}
+  .nf .nf-tip{border-color:#34d399;background:#ecfdf5}
+  .nf .nf-warn{border-color:#f87171;background:#fef2f2}
+  
+  /* Quote */
+  .nf blockquote{margin:22px 0;padding:14px 18px;border-left:4px solid var(--brand);background:var(--soft);font-style:italic;color:#444}
+  
+  /* Footer in article */
+  .nf .nf-article-footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--stroke);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .nf .nf-share a{margin-right:10px;color:var(--brand)}
+  
+  .nf .nf-back{display:inline-block;margin-top:16px;padding:10px 16px;background:var(--soft);border:1px solid var(--stroke);border-radius:12px}
+  
+  /* Responsive tweaks */
+  @media (max-width:640px){
+    .nf .nf-hero h1{font-size:26px}
+    .nf .nf-article{padding:22px}
+  }
+  

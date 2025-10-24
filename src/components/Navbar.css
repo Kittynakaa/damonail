@@ -1,0 +1,107 @@
+/* =======================
+   navbar.css – iOS-like Ultra Frosted
+   ======================= */
+
+   :root{
+    --ink:#0f1221;
+    --peach:#f9c6d0;           /* accent */
+    --peach-strong:#f28fb0;
+  }
+  
+  /* ─ Nav: ใสแบบ iOS */
+  .nav{
+    position:sticky; top:0; z-index:999;
+  
+    /* โปร่งใสมาก + ไล่เฉดจาง ๆ */
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,.20),
+        rgba(255,255,255,.14));
+  
+    /* เบลอจัด + คอนทราสต์/อิ่มสีแบบ iOS */
+    backdrop-filter: blur(22px) saturate(180%) contrast(1.05);
+    -webkit-backdrop-filter: blur(22px) saturate(180%) contrast(1.05);
+  
+    border-bottom:1px solid rgba(255,255,255,.28);
+    box-shadow:0 8px 24px rgba(15,18,33,.06);
+  
+    /* ให้มีเลเยอร์สำหรับประกาย+เกรน */
+    position:sticky; isolation:isolate;
+  }
+  
+  /* เส้นไฮไลต์ด้านบน (glare) */
+  .nav::before{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:1px;
+    background:linear-gradient(90deg,
+      rgba(255,255,255,.85), rgba(255,255,255,0), rgba(255,255,255,.85));
+    pointer-events:none; opacity:.8; z-index:-1;
+  }
+  
+  /* เกรนจาง ๆ แบบ iOS */
+  .nav::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.06) 0, transparent 60%),
+      radial-gradient(1px 1px at 75% 35%, rgba(0,0,0,.05) 0, transparent 60%),
+      radial-gradient(1px 1px at 50% 75%, rgba(0,0,0,.05) 0, transparent 60%);
+    background-repeat:repeat;
+    background-size: 120px 120px, 160px 160px, 200px 200px;
+    mix-blend-mode:multiply;
+    opacity:.35;
+    pointer-events:none;
+    z-index:-1;
+  }
+  
+  /* ภายใน */
+  .nav-inner{
+    max-width:1200px; margin:0 auto; padding:12px 22px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px;
+    min-height:64px;
+  }
+  
+  /* โลโก้เป็นรูป (ไม่ดันความสูงแถบ) */
+  .logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+  .logo-img{ height:40px; width:auto; display:block; object-fit:contain; }
+  
+  /* ลิงก์เมนู */
+  .nav-links{ display:flex; align-items:center; gap:26px; }
+  .nav-links a{
+    color:var(--ink); text-decoration:none; font-weight:600; font-size:.95rem; position:relative;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:-4px; height:2px; width:0%;
+    background:var(--peach-strong); border-radius:2px; transition:width .25s ease;
+  }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a:hover::after{ width:100%; }
+  
+  /* ปุ่มโปร่งใสแนว iOS */
+  .btn{ font-weight:700; border-radius:999px; padding:10px 16px; border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,.18); color:var(--ink);
+    backdrop-filter: blur(8px) saturate(160%); -webkit-backdrop-filter: blur(8px) saturate(160%);
+    transition: all .2s ease;
+  }
+  .btn:hover{ background:rgba(255,255,255,.28); }
+  .btn-ghost{ border-color:rgba(242,143,176,.35); color:#b13c66; }
+  
+  /* เวอร์ชันตอนเลื่อน (ทำให้ทึบขึ้นนิด) */
+  .nav.nav--scrolled{
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,.32),
+        rgba(255,255,255,.22));
+    border-bottom-color: rgba(255,255,255,.35);
+    box-shadow:0 12px 36px rgba(15,18,33,.10);
+  }
+  
+  /* Fallback: เบราว์เซอร์ไม่รองรับ backdrop-filter */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+    .nav{ background: rgba(255,255,255,.92); }
+  }
+  
+  /* Responsive */
+  .hamb{ display:none; background:none; border:0; font-size:1.6rem; color:var(--ink); }
+  @media (max-width:860px){ .nav-links{ display:none; } .hamb{ display:block; } }
+  

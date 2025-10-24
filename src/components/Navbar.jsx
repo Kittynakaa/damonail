@@ -1,6 +1,6 @@
 // Navbar.jsx
 import { Link } from "react-router-dom";
-import "./navbar.css";
+import "./Navbar.css";
 
 // 1) กรณีไฟล์อยู่ใน src/assets
 // import logo from "./assets/logo.png";  // แก้ path ให้ตรงของคุณ

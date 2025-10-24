@@ -1,5 +1,5 @@
 import React from "react";
-import "./Articleacrylic.css";
+import "./ArticleAcrylic.css";
 
 export default function ArticleAcrylic() {
   return (

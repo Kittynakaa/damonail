@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Helpcenter.css"; // ✅ แยก CSS ออก และสcope ด้วย .hc ไม่ไปทับหน้ อื่น
+import "./HelpCenter.css"; // ✅ แยก CSS ออก และสcope ด้วย .hc ไม่ไปทับหน้ อื่น
 
 export default function HelpCenter() {
   const [q, setQ] = useState("");

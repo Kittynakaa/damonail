@@ -1,5 +1,4 @@
 /* Articles.css */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
 
 .articles-page-wrapper {
   background:
@@ -27,12 +26,7 @@
   padding: 80px 20px;
 }
 
-/* Header & Hero */
-.articles-header {
-  padding: 40px 20px;
-  text-align: center;
-}
-
+/* Header (ใช้ PageHero แทนแล้ว, เหลือแค่ .articles-sub-title ที่ยังใช้ใน section อื่น) */
 .articles-sub-title {
   font-size: 12px;
   letter-spacing: 4px;
@@ -41,42 +35,6 @@
   text-transform: uppercase;
   padding-top: 50px;
 
-}
-
-.articles-main-title {
-  font-family: 'Playfair Display';
-  font-size: 40px;
-  line-height: 1.1;
-  font-weight: 300;
-  margin-bottom: 40px;
- 
-}
-
-.articles-hero-image-wrapper {
-  position: relative;
-  max-width: 1400px;
-  margin: 0 auto;
-  height: 450px;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(225, 178, 200, 0.18);
-}
-
-.articles-hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(30%) contrast(110%);
-}
-
-.articles-hero-overlay-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-family: 'Playfair Display', serif;
-  text-align: center;
 }
 
 /* Topic Grid Section */

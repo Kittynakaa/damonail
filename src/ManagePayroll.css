@@ -1,0 +1,96 @@
+.manage-payroll-page {
+  flex: 1;
+  width: 100%;
+  padding: 0;
+}
+.manage-payroll-page .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.manage-payroll-page h1 {
+  color: #ff6b98;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+.manage-payroll-page p {
+  color: #888;
+  margin: 0;
+}
+.manage-payroll-page .header-actions {
+  display: flex;
+  gap: 10px;
+}
+.manage-payroll-page .header-actions select {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #444;
+  background: #fff;
+}
+
+.manage-payroll-page .service-card {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.manage-payroll-page .service-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.manage-payroll-page .service-table th,
+.manage-payroll-page .service-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f1f1f1;
+  text-align: left;
+}
+
+.manage-payroll-page .status {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.manage-payroll-page .status.open {
+  background: #e8f7ef;
+  color: #28a745;
+}
+.manage-payroll-page .status.closed {
+  background: #fff4e5;
+  color: #a86500;
+}
+
+.manage-payroll-page .btn-add {
+  background: #ff6b98;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.manage-payroll-page .btn-add:hover {
+  background: #ff4b88;
+}
+
+.payroll-total-input {
+  width: 100px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.payroll-total-bar {
+  margin-top: 16px;
+  text-align: right;
+  font-size: 1rem;
+  color: #444;
+}

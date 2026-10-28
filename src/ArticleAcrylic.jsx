@@ -6,7 +6,7 @@ const ARTICLES = {
   acrylic: {
     title: "5 ข้อควรเช็คก่อน “ต่อเล็บอะคริลิค” ครั้งแรก",
     date: "29 กันยายน 2025",
-    author: "ทีมงาน GlamNail",
+    author: "ทีมงาน Crystal Shine",
     cover: "/Articles/acrylic.jpg",
     content: [
       {
@@ -23,7 +23,7 @@ const ARTICLES = {
       },
       {
         h: "3. ความยาวเล็บต้องเหมาะกับไลฟ์สไตล์",
-        p: "เล็บที่ยาวเกินไปอาจไม่เหมาะกับคนทำงานหรือใช้มือเยอะ AI ของ GlamNail สามารถช่วยประเมินรูปทรงเล็บที่เหมาะกับคุณได้",
+        p: "เล็บที่ยาวเกินไปอาจไม่เหมาะกับคนทำงานหรือใช้มือเยอะ AI ของ Crystal Shine สามารถช่วยประเมินรูปทรงเล็บที่เหมาะกับคุณได้",
       },
       {
         h: "4. การดูแลหลังต่อเล็บ",
@@ -61,6 +61,7 @@ export default function ArticleDetail() {
         <img src={article.cover} alt={article.title} />
         <div className="overlay" />
         <div className="article-hero-text">
+          <span className="article-eyebrow">บทความ</span>
           <p className="meta">
             {article.author} • {article.date}
           </p>
@@ -79,9 +80,9 @@ export default function ArticleDetail() {
 
         {/* AI INSIGHT */}
         <div className="article-ai-tip">
-          <h3>AI Insight จาก GlamNail</h3>
+          <h3>ข้อมูลเชิงลึกจาก AI ของ Crystal Shine</h3>
           <p>
-            ระบบ AI ของ GlamNail สามารถวิเคราะห์รูปทรงนิ้วและโทนสีผิวของคุณ
+            ระบบ AI ของ Crystal Shine สามารถวิเคราะห์รูปทรงนิ้วและโทนสีผิวของคุณ
             เพื่อแนะนำความยาว สี และทรงเล็บอะคริลิคที่เหมาะสม
             ช่วยให้เล็บดูสวยและปลอดภัยกับการใช้งานในชีวิตประจำวัน
           </p>

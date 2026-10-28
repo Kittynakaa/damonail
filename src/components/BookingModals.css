@@ -1,0 +1,421 @@
+/* ใช้ร่วมกันโดย BookingDetailModal / CancelBookingModal / RescheduleRequestModal
+   สืบทอดโทนสี "atelier" เดียวกับ UserProfile.css */
+
+.bkm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(104, 77, 89, 0.32);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: bkmFadeIn 0.2s ease forwards;
+}
+
+.bkm-overlay.bkm-nested {
+  z-index: 2100;
+}
+
+.bkm-sheet {
+  background: #fffafd;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 70px rgba(148, 114, 127, 0.28);
+  border: 1px solid var(--line-soft, rgba(209, 139, 170, 0.16));
+  animation: bkmPopIn 0.22s ease forwards;
+}
+
+.bkm-sheet.bkm-small {
+  max-width: 420px;
+}
+
+@keyframes bkmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bkmPopIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- header ---------- */
+.bkm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 26px 14px;
+  border-bottom: 1px solid var(--line-soft, rgba(209, 139, 170, 0.16));
+}
+
+.bkm-header h3 {
+  margin: 0;
+  font-family: "Playfair Display", "Noto Sans Thai", serif;
+  font-size: 1.35rem;
+  color: #8d5b6f;
+}
+
+.bkm-close-btn {
+  border: none;
+  background: rgba(255, 240, 246, 0.7);
+  color: #94727f;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.bkm-close-btn:hover {
+  background: #ffe6f0;
+  color: #684d59;
+}
+
+.bkm-body {
+  padding: 20px 26px 26px;
+}
+
+.bkm-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: #94727f;
+}
+
+/* ---------- store block ---------- */
+.bkm-store-block {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.bkm-store-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(209, 139, 170, 0.18);
+}
+
+.bkm-store-img.bkm-placeholder {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #ffe1ed, #ffd0e0);
+  color: #bf6788;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.bkm-store-name {
+  font-family: "Playfair Display", "Noto Sans Thai", serif;
+  font-size: 1.1rem;
+  color: #684d59;
+  margin: 0 0 4px;
+}
+
+.bkm-store-meta {
+  font-size: 12.5px;
+  color: #94727f;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ---------- status badge (reuses .status-badge base, adds color classes) ---------- */
+.bkm-status-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.status-badge.pending    { background: #fff1be; color: #a97600; }
+.status-badge.confirmed  { background: #e6f7ea; color: #2f9d57; }
+.status-badge.done       { background: #e8efff; color: #4b6fd3; }
+.status-badge.canceled   { background: #ffe6ea; color: #d95b74; }
+.status-badge.reschedule { background: #ffe9d6; color: #c1701f; }
+
+/* ---------- detail rows ---------- */
+.bkm-section-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--atelier-gold, #c88aa3);
+  margin: 18px 0 10px;
+  font-weight: 700;
+}
+
+.bkm-section-title:first-child {
+  margin-top: 0;
+}
+
+.bkm-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(209, 139, 170, 0.1);
+  font-size: 13.5px;
+}
+
+.bkm-row:last-child {
+  border-bottom: none;
+}
+
+.bkm-row-label {
+  color: #94727f;
+  flex-shrink: 0;
+}
+
+.bkm-row-value {
+  color: #684d59;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ---------- timeline ---------- */
+.bkm-timeline {
+  display: flex;
+  align-items: flex-start;
+  margin: 18px 0 6px;
+}
+
+.bkm-timeline-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.bkm-timeline-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f0dbe4;
+  margin: 0 auto 8px;
+  border: 3px solid #fffafd;
+  box-shadow: 0 0 0 1px rgba(209, 139, 170, 0.25);
+  position: relative;
+  z-index: 1;
+}
+
+.bkm-timeline-step.done .bkm-timeline-dot {
+  background: var(--atelier-green, #d9789c);
+}
+
+.bkm-timeline-step.current .bkm-timeline-dot {
+  background: var(--atelier-green, #d9789c);
+  box-shadow: 0 0 0 4px rgba(217, 122, 156, 0.22);
+}
+
+.bkm-timeline-step::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: #f0dbe4;
+  z-index: 0;
+}
+
+.bkm-timeline-step:first-child::before {
+  content: none;
+}
+
+.bkm-timeline-step.done::before {
+  background: var(--atelier-green, #d9789c);
+}
+
+.bkm-timeline-label {
+  font-size: 10.5px;
+  color: #b195a3;
+  line-height: 1.3;
+}
+
+.bkm-timeline-step.done .bkm-timeline-label,
+.bkm-timeline-step.current .bkm-timeline-label {
+  color: #8d5b6f;
+  font-weight: 600;
+}
+
+/* ---------- info / notice boxes ---------- */
+.bkm-notice {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.bkm-notice.bkm-notice-warning {
+  background: #fff1e0;
+  color: #9a5c14;
+  border: 1px solid #ffdcae;
+}
+
+.bkm-notice.bkm-notice-info {
+  background: #fff1f6;
+  color: #8d5b6f;
+  border: 1px solid var(--line-soft, rgba(209, 139, 170, 0.16));
+}
+
+.bkm-notice.bkm-notice-danger {
+  background: #ffe9ec;
+  color: #b8455f;
+  border: 1px solid #ffc9d2;
+}
+
+.bkm-notice strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ---------- actions ---------- */
+.bkm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.bkm-actions.bkm-actions-row {
+  flex-direction: row;
+}
+
+.bkm-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 13px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  flex: 1;
+}
+
+.bkm-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.bkm-btn-primary {
+  background: linear-gradient(135deg, var(--atelier-green, #d9789c), var(--atelier-green-dark, #bf6788));
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(217, 122, 156, 0.2);
+}
+
+.bkm-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.bkm-btn-danger {
+  background: #fff;
+  color: #d95b74;
+  border: 1.5px solid #ffc9d2;
+}
+
+.bkm-btn-danger:hover:not(:disabled) {
+  background: #fff1f3;
+}
+
+.bkm-btn-ghost {
+  background: rgba(255, 240, 246, 0.7);
+  color: #684d59;
+}
+
+.bkm-btn-ghost:hover:not(:disabled) {
+  background: #ffe6f0;
+}
+
+/* ---------- form elements ---------- */
+.bkm-field {
+  margin-bottom: 16px;
+}
+
+.bkm-field label {
+  display: block;
+  font-size: 12px;
+  color: #94727f;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.bkm-field input[type="date"],
+.bkm-field input[type="time"],
+.bkm-field select,
+.bkm-field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line-soft, rgba(209, 139, 170, 0.2));
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-family: inherit;
+  color: #684d59;
+  box-sizing: border-box;
+}
+
+.bkm-field textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.bkm-field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.bkm-field-row .bkm-field {
+  flex: 1;
+}
+
+.bkm-old-datetime {
+  background: rgba(255, 240, 246, 0.5);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 13.5px;
+  color: #8d5b6f;
+}
+
+.bkm-old-datetime strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #b195a3;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+/* ---------- mobile: bottom sheet ---------- */
+@media (max-width: 640px) {
+  .bkm-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .bkm-sheet {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 24px 24px 0 0;
+    animation: bkmSlideUp 0.24s ease forwards;
+  }
+
+  .bkm-actions.bkm-actions-row {
+    flex-direction: column;
+  }
+}
+
+@keyframes bkmSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

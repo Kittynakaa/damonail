@@ -1,10 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./HelpCenter.css";
+import PageHero from "./components/PageHero";
+
+const TOPICS = [
+  {
+    id: "account",
+    title: "บัญชีผู้ใช้",
+    summary: "สมัครและจัดการข้อมูลส่วนตัว",
+    answer: "แก้ไขข้อมูลส่วนตัว รูปโปรไฟล์ และดูประวัติการจองทั้งหมดได้ที่หน้าโปรไฟล์ของคุณ",
+    linkTo: "/UserProfile",
+    linkLabel: "ไปที่โปรไฟล์ของฉัน",
+  },
+  {
+    id: "payment",
+    title: "การชำระเงิน",
+    summary: "โปรโมชั่นและช่องทางการชำระเงิน",
+    answer: "แต่ละร้านกำหนดช่องทางชำระเงินของตัวเอง (เงินสด/บัตร/พร้อมเพย์) โปรโมชั่นที่ใช้ได้จะแสดงในหน้ารายละเอียดร้านก่อนยืนยันการจองเสมอ",
+  },
+  {
+    id: "membership",
+    title: "สมาชิก",
+    summary: "การสะสมแต้มและสิทธิพิเศษ",
+    answer: "ขณะนี้ยังไม่เปิดให้บริการระบบสะสมแต้มสมาชิก หากเปิดให้บริการจะแจ้งเตือนผ่านกระดิ่งแจ้งเตือนบนเว็บไซต์",
+  },
+  {
+    id: "policy",
+    title: "นโยบาย",
+    summary: "กติกาและนโยบายความเป็นส่วนตัว",
+    answer: "หากมีข้อสงสัยเรื่องนโยบายการยกเลิก/คืนเงิน หรือความเป็นส่วนตัว ติดต่อฝ่ายบริการลูกค้าได้ทางอีเมลหรือเบอร์โทรด้านล่าง",
+  },
+];
 
 export default function HelpCenter() {
   const [q, setQ] = useState("");
+  const [openTopicId, setOpenTopicId] = useState(null);
+  const [notFound, setNotFound] = useState(false);
+  const topicRefs = useRef({});
 
   // เริ่มต้นใช้งาน AOS
   useEffect(() => {
@@ -15,31 +49,56 @@ export default function HelpCenter() {
     });
   }, []);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const term = q.trim().toLowerCase();
+    if (!term) return;
+
+    const match = TOPICS.find(
+      (t) =>
+        t.title.toLowerCase().includes(term) ||
+        t.summary.toLowerCase().includes(term) ||
+        t.answer.toLowerCase().includes(term)
+    );
+
+    if (match) {
+      setNotFound(false);
+      setOpenTopicId(match.id);
+      topicRefs.current[match.id]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      setNotFound(true);
+    }
+  };
+
   return (
     <div className="hc-luxury">
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');`}
-      </style>
-
       {/* HERO SECTION */}
-      <header className="hc-hero-v2">
-        <div className="hc-hero-content">
-          <span className="hc-label" data-aos="fade-down" data-aos-delay="200">CUSTOMER CARE</span>
-          <h1 className="hc-main-title" data-aos="fade-up" data-aos-delay="400">
-            HOW CAN WE <br />
-            <em data-aos="italic-fade">Assist You</em> TODAY?
-          </h1>
-          <div className="hc-search-wrapper" data-aos="zoom-in" data-aos-delay="600">
-            <input 
-              type="text" 
-              placeholder="Search for help... (e.g. Booking, Pricing)" 
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
-            <button>SEARCH</button>
-          </div>
-        </div>
-      </header>
+      <PageHero
+        eyebrow="ศูนย์ช่วยเหลือลูกค้า"
+        title={<>วันนี้ให้เรา<br />ช่วยเหลือคุณ เรื่องอะไรดี?</>}
+      >
+        <form className="hc-search-wrapper" data-aos="zoom-in" data-aos-delay="600" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="ค้นหาความช่วยเหลือ... (เช่น การจอง, ราคา)"
+            value={q}
+            onChange={(e) => { setQ(e.target.value); setNotFound(false); }}
+          />
+          <button type="submit">ค้นหา</button>
+        </form>
+        {notFound && (
+          <p className="hc-search-empty">
+            ไม่พบหัวข้อที่ตรงกับ "{q}" — ลองค้นหาคำอื่น หรือ
+            <button
+              type="button"
+              className="hc-link-inline"
+              onClick={() => document.querySelector(".hc-contact-banner")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              {" "}ติดต่อฝ่ายบริการลูกค้า
+            </button>
+          </p>
+        )}
+      </PageHero>
 
       {/* QUICK ACTIONS */}
       <section className="hc-container-v2">
@@ -47,27 +106,27 @@ export default function HelpCenter() {
           <div className="hc-service-card" data-aos="fade-up" data-aos-delay="200">
             <div className="hc-bg-text">01</div>
             <div className="hc-card-inner">
-              <h3>TRACK BOOKING</h3>
+              <h3>ติดตามการจอง</h3>
               <p>ตรวจสอบสถานะนัดหมายล่าสุดของคุณได้ที่นี่</p>
-              <a href="#/track" className="hc-link">CHECK NOW</a>
+              <Link to="/UserProfile" className="hc-link">ตรวจสอบเลย</Link>
             </div>
           </div>
 
           <div className="hc-service-card" data-aos="fade-up" data-aos-delay="400">
             <div className="hc-bg-text">02</div>
             <div className="hc-card-inner">
-              <h3>MANAGE APPOINTMENT</h3>
+              <h3>จัดการนัดหมาย</h3>
               <p>เปลี่ยนแปลงหรือยกเลิกการจองได้ด้วยตัวเอง</p>
-              <a href="#/manage" className="hc-link">MANAGE</a>
+              <Link to="/UserProfile" className="hc-link">จัดการ</Link>
             </div>
           </div>
 
           <div className="hc-service-card" data-aos="fade-up" data-aos-delay="600">
             <div className="hc-bg-text">03</div>
             <div className="hc-card-inner">
-              <h3>FIND LOCATIONS</h3>
+              <h3>ค้นหาสาขา</h3>
               <p>ดูแผนที่สาขา เวลาทำการ และที่จอดรถ</p>
-              <a href="#/locations" className="hc-link">VIEW MAP</a>
+              <Link to="/AllStores" className="hc-link">ดูแผนที่</Link>
             </div>
           </div>
         </div>
@@ -77,24 +136,38 @@ export default function HelpCenter() {
       <section className="hc-topics-section">
         <div className="hc-container-v2">
            <div className="hc-flex-header">
-              <h2 className="hc-side-title" data-aos="fade-right">TOPICS</h2>
+              <h2 className="hc-side-title" data-aos="fade-right">หัวข้อ</h2>
               <div className="hc-topics-grid">
-                  <a href="#" className="hc-topic-item" data-aos="fade-left" data-aos-delay="100">
-                    <span>ACCOUNT</span>
-                    <small>สมัครและจัดการข้อมูลส่วนตัว</small>
-                  </a>
-                  <a href="#" className="hc-topic-item" data-aos="fade-left" data-aos-delay="200">
-                    <span>PAYMENT</span>
-                    <small>โปรโมชั่นและช่องทางการชำระเงิน</small>
-                  </a>
-                  <a href="#" className="hc-topic-item" data-aos="fade-left" data-aos-delay="300">
-                    <span>MEMBERSHIP</span>
-                    <small>การสะสมแต้มและสิทธิพิเศษ</small>
-                  </a>
-                  <a href="#" className="hc-topic-item" data-aos="fade-left" data-aos-delay="400">
-                    <span>POLICIES</span>
-                    <small>กติกาและนโยบายความเป็นส่วนตัว</small>
-                  </a>
+                  {TOPICS.map((topic, i) => {
+                    const isOpen = openTopicId === topic.id;
+                    return (
+                      <div
+                        key={topic.id}
+                        className="hc-topic-item"
+                        ref={(el) => { topicRefs.current[topic.id] = el; }}
+                        data-aos="fade-left"
+                        data-aos-delay={(i + 1) * 100}
+                      >
+                        <button
+                          type="button"
+                          className="hc-topic-trigger"
+                          aria-expanded={isOpen}
+                          onClick={() => setOpenTopicId(isOpen ? null : topic.id)}
+                        >
+                          <span>{topic.title}</span>
+                          <small>{topic.summary}</small>
+                        </button>
+                        {isOpen && (
+                          <div className="hc-topic-answer">
+                            <p>{topic.answer}</p>
+                            {topic.linkTo && (
+                              <Link to={topic.linkTo} className="hc-link">{topic.linkLabel}</Link>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
               </div>
            </div>
         </div>
@@ -103,14 +176,12 @@ export default function HelpCenter() {
       {/* CONTACT BANNER */}
       <section className="hc-contact-banner">
         <div className="hc-banner-box" data-aos="zoom-out-up">
-           <p data-aos="fade-in" data-aos-delay="400">STILL NEED HELP?</p>
-           <h2 data-aos="fade-up" data-aos-delay="600">GET IN TOUCH</h2>
+           <p data-aos="fade-in" data-aos-delay="400">ยังต้องการความช่วยเหลืออยู่ใช่ไหม?</p>
+           <h2 data-aos="fade-up" data-aos-delay="600">ติดต่อเรา</h2>
            <div className="hc-contact-links" data-aos="fade-up" data-aos-delay="800">
-              <a href="mailto:hello@glamnail.com">EMAIL US</a>
+              <a href="mailto:hello@glamnail.com">อีเมลหาเรา</a>
               <span className="hc-dot"></span>
-              <a href="tel:0812345678">CALL SUPPORT</a>
-              <span className="hc-dot"></span>
-              <a href="#/chat">LIVE CHAT</a>
+              <a href="tel:0812345678">โทรหาฝ่ายบริการ</a>
            </div>
         </div>
       </section>

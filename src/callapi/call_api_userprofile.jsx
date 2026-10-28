@@ -1,6 +1,6 @@
 import axios from "axios";
-// let api = "http://localhost:5010";
-const api ="https://backend-gold-kappa-26.vercel.app"
+import { authHeader } from "./auth";
+let api = "http://localhost:5010";
 
 
 export async function updateUserById(userId, payload) {
@@ -97,14 +97,11 @@ export async function getUsers() {
 
 
 export async function getUserBookings(userId) {
-  try {
-    // แก้ไข URL ตรงนี้ให้เป็นที่อยู่จริงของ Backend ของคุณ
-    const response = await axios.get(`http://localhost:5010/booking/user/${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลการจอง:", error);
-    return [];
-  }
+  // ไม่ catch/คืน [] เงียบ ๆ ที่นี่ -- ต้องให้ผู้เรียก (UserProfile) แยกออกว่า
+  // "ไม่มีการจอง" (200 + array ว่าง) กับ "session หมดอายุ/ไม่ได้ login" (401)
+  // ต่างกัน เพื่อพาไปหน้า login ใหม่แทนที่จะแสดงหน้าว่างเปล่าเงียบ ๆ
+  const response = await axios.get(`${api}/booking/user/${userId}`, { headers: authHeader() });
+  return response.data;
 }
 
 export async function getStoreByUser(userId) {

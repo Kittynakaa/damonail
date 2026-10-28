@@ -223,16 +223,16 @@ export default function ManagePromotions() {
 
         {showModal &&
           ReactDOM.createPortal(
-            <div className="modal-overlay" onClick={() => setShowModal(false)}>
-              <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
+            <div className="promotion-modal-overlay" onClick={() => setShowModal(false)}>
+              <div className="promotion-modal" onClick={(e) => e.stopPropagation()}>
+                <div className="promotion-modal-header">
                   <h3>{editingPromo ? "แก้ไขโปรโมชั่น" : "เพิ่มโปรโมชั่นใหม่"}</h3>
-                  <button className="close-btn" onClick={() => setShowModal(false)}>
+                  <button className="promotion-close-btn" onClick={() => setShowModal(false)}>
                     <FiX />
                   </button>
                 </div>
 
-                <div className="modal-body">
+                <div className="promotion-modal-body">
                   <label>ชื่อโปรโมชั่น</label>
                   <input
                     type="text"
@@ -279,11 +279,11 @@ export default function ManagePromotions() {
                   />
                 </div>
 
-                <div className="modal-actions">
-                  <button className="cancel-btn" onClick={() => setShowModal(false)}>
+                <div className="promotion-modal-actions">
+                  <button className="promotion-cancel-btn" onClick={() => setShowModal(false)}>
                     ยกเลิก
                   </button>
-                  <button className="save-btn" onClick={handleSave}>
+                  <button className="promotion-save-btn" onClick={handleSave}>
                     <FiSave /> บันทึก
                   </button>
                 </div>

@@ -1,21 +1,34 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getStores } from "./callapi/call_api_user.jsx";
+import useNearbyStores from "./hooks/useNearbyStores";
+import PageHero from "./components/PageHero";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FiMapPin } from "react-icons/fi";
 import AOS from "aos"; // 1. Import AOS
 import "aos/dist/aos.css"; // 2. Import CSS
 import "./AllStores.css";
-import { useLanguage } from "./i18n.jsx";
 
 const PER_PAGE = 8;
-const IMAGE_BASE_URL = "https://backend-gold-kappa-26.vercel.app/static/images";
+const IMAGE_BASE_URL = "http://localhost:5010/static/images";
+const NEARBY_PROVINCES = ["ขอนแก่น", "กรุงเทพมหานคร", "เชียงราย", "ชัยภูมิ", "นครสวรรค์", "กระบี่"];
+
+// คำค้นหาที่ใช้จับคู่ตัวเลือก "บริการ" จากแถบค้นหาหน้าแรก กับชื่อบริการจริงของร้าน
+// (ฐานข้อมูลเก็บแค่ชื่อบริการเป็นข้อความอิสระ ไม่มีหมวดหมู่ตรงกับตัวเลือกในแถบค้นหา)
+const SERVICE_KEYWORDS = {
+  "เจลมือ / เท้า": ["เจล", "gel", "manicure", "pedicure"],
+  "เพ้นท์ลาย": ["เพ้นท์", "ลาย", "art", "french"],
+  "ต่อเล็บ": ["ต่อเล็บ", "extension", "acrylic"],
+  "สปามือ-เท้า": ["สปา", "spa", "massage", "scrub", "paraffin"],
+};
 
 export default function AllStores() {
-  const { language, t } = useLanguage();
   const { search } = useLocation();
   const params = useMemo(() => new URLSearchParams(search), [search]);
 
   const [q, setQ] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
   const [area, setArea] = useState("");
   const [sort, setSort] = useState("best");
   const [page, setPage] = useState(1);
@@ -56,82 +69,142 @@ export default function AllStores() {
     fetchStore();
   }, []);
 
+  // ร้านใกล้ฉัน -- เปิดใช้เมื่อกดปุ่ม "ร้านใกล้ฉัน"
+  const [nearbyMode, setNearbyMode] = useState(false);
+  const {
+    stores: nearbyStores,
+    loading: nearbyLoading,
+    permissionDenied: nearbyPermissionDenied,
+    searchByProvince,
+  } = useNearbyStores();
+
+  useEffect(() => {
+    if (nearbyMode) setSort("distance");
+    else if (sort === "distance") setSort("best");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nearbyMode]);
+
   useEffect(() => {
     const qParam = params.get("q") || "";
     setQ(qParam);
+    setServiceFilter(params.get("service") || "");
+    setDateFilter(params.get("date") || "");
   }, [params]);
 
+  const sourceStores = nearbyMode ? nearbyStores : store;
+
   const filtered = useMemo(() => {
-    return store.filter((s) => {
-      if (q && !s.store_name?.toLowerCase().includes(q.toLowerCase())) return false;
+    const qLower = q.trim().toLowerCase();
+    const serviceKeywords = SERVICE_KEYWORDS[serviceFilter] || [];
+
+    return sourceStores.filter((s) => {
+      if (qLower) {
+        // ค้นหาจาก "สถานที่" -- จับคู่ทั้งชื่อร้านและที่อยู่ (ที่อยู่/ตำบล/อำเภอ/จังหวัด)
+        const haystack = [s.store_name, s.address, s.street, s.subdistrict, s.district, s.province]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        if (!haystack.includes(qLower)) return false;
+      }
+      if (serviceKeywords.length > 0) {
+        const serviceNames = (s.service_names || "").toLowerCase();
+        if (!serviceKeywords.some((kw) => serviceNames.includes(kw))) return false;
+      }
       if (area && s.area !== area) return false;
       return true;
     });
-  }, [store, q, area]);
+  }, [sourceStores, q, serviceFilter, area]);
 
   const sorted = useMemo(() => {
     const arr = [...filtered];
     if (sort === "rating") arr.sort((a, b) => (b.avg_rating || 0) - (a.avg_rating || 0));
     else if (sort === "price_asc") arr.sort((a, b) => a.price - b.price);
     else if (sort === "price_desc") arr.sort((a, b) => b.price - a.price);
+    else if (sort === "distance") arr.sort((a, b) => (a.distance_km ?? Infinity) - (b.distance_km ?? Infinity));
     return arr;
   }, [filtered, sort]);
 
   const pages = Math.max(1, Math.ceil(sorted.length / PER_PAGE));
   const items = sorted.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
-  useEffect(() => setPage(1), [q, area, sort]);
+  useEffect(() => setPage(1), [q, serviceFilter, area, sort]);
 
   return (
     <div className="ag-root">
-      {/* Hero Section - ใส่ AOS แบบแยกทิศทางภาพ */}
-      <section className="ag-hero-modern">
-        <div className="hero-visual-layers">
-          <div className="img-box box-1" data-aos="fade-down-right" data-aos-delay="200">
-            <img src="https://i.pinimg.com/1200x/a9/b4/85/a9b4851e32d7ab8d81cb501a632fa380.jpg" alt="v1" />
-          </div>
-          <div className="img-box box-2" data-aos="fade-down-left" data-aos-delay="400">
-            <img src="https://i.pinimg.com/1200x/a4/8d/89/a48d8916bd3a8a2723390d870269d7fc.jpg" alt="v2" />
-          </div>
-          <div className="img-box box-3" data-aos="fade-up-right" data-aos-delay="600">
-            <img src="https://i.pinimg.com/1200x/fe/f1/aa/fef1aa363432f16e73183e057604dfcf.jpg" alt="v3" />
-          </div>
-          <div className="img-box box-4" data-aos="fade-up-left" data-aos-delay="800">
-            <img src="https://i.pinimg.com/1200x/3e/91/14/3e91145173d4d88e009214827ca4e0fa.jpg" alt="v4" />
-          </div>
-        </div>
-
-        <div className="hero-center-content" data-aos="zoom-in" data-aos-duration="1500">
-          <span className="hero-tagline">{t("allstores_tagline")}</span>
-          <h1 className="hero-title">ALL STORE <br />NAILS</h1>
-          <p className="hero-desc">
-            {t("allstores_desc_1")} <br />
-            {t("allstores_desc_2")}
-          </p>
-          <button className="ag-btn-sharp">{t("allstores_view_all")}</button>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="ร้านทำเล็บทั้งหมด"
+        title="ร้านทำเล็บคุณภาพ ที่คุณวางใจ"
+        description="ค้นหาร้านทำเล็บที่ใช่ พร้อมจองคิวได้ง่ายในไม่กี่คลิก คัดสรรร้านคุณภาพทั่วประเทศ"
+        chips={["ร้านคัดสรร", "รีวิวจริง", "จองคิวออนไลน์", "ร้านใกล้ฉัน"]}
+      />
 
       {/* Filter Bar */}
       <div className="ag-filter-bar" data-aos="fade-up">
         <div className="ag-container">
           <div className="ag-filter-group">
-            <button className={area === "" ? "active" : ""} onClick={() => setArea("")}>{t("allstores_areas_all")}</button>
+            <button className={area === "" ? "active" : ""} onClick={() => setArea("")}>ร้านทั้งหมด</button>
             {["สยาม", "อารีย์", "ขอนแก่น", "ลาดพร้าว"].map(a => (
               <button key={a} className={area === a ? "active" : ""} onClick={() => setArea(a)}>{a}</button>
             ))}
+            <button
+              className={nearbyMode ? "active" : ""}
+              onClick={() => setNearbyMode((v) => !v)}
+            >
+              <FiMapPin /> ร้านใกล้ฉัน
+            </button>
           </div>
           <div className="ag-search-wrapper">
-            <input type="text" placeholder={t("allstores_search")} value={q} onChange={(e) => setQ(e.target.value)} />
+            <input type="text" placeholder="ค้นหาร้าน..." value={q} onChange={(e) => setQ(e.target.value)} />
           </div>
         </div>
+
+        {nearbyMode && nearbyPermissionDenied && (
+          <div className="ag-container nearby-fallback">
+            <span>ไม่ได้อนุญาตให้เข้าถึงตำแหน่ง — เลือกจังหวัดเพื่อค้นหาร้านแทน:</span>
+            <select
+              defaultValue=""
+              onChange={(e) => e.target.value && searchByProvince(e.target.value)}
+            >
+              <option value="" disabled>เลือกจังหวัด</option>
+              {NEARBY_PROVINCES.map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        {nearbyMode && nearbyLoading && (
+          <div className="ag-container" style={{ textAlign: "center" }}>กำลังค้นหาร้านใกล้คุณ...</div>
+        )}
       </div>
 
       {/* Main Content */}
       <main className="ag-container">
+        {(serviceFilter || dateFilter) && (
+          <div className="ag-active-filters" data-aos="fade-up">
+            <span>กำลังค้นหา:</span>
+            {serviceFilter && <span className="ag-filter-chip">บริการ: {serviceFilter}</span>}
+            {dateFilter && <span className="ag-filter-chip">วันที่: {dateFilter}</span>}
+            <button
+              type="button"
+              className="ag-filter-clear"
+              onClick={() => { setServiceFilter(""); setDateFilter(""); }}
+            >
+              ล้างตัวกรอง
+            </button>
+          </div>
+        )}
         <div className="ag-section-title" data-aos="fade-right">
-          <h2>{t("allstores_section_title")}</h2>
-          <Link to="#" className="view-all">{t("allstores_view_all_store")}</Link>
+          <h2>ร้านของเรา</h2>
+          <div className="ag-sort-group">
+            <label htmlFor="ag-sort">เรียงตาม</label>
+            <select id="ag-sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="best">แนะนำ</option>
+              <option value="rating">คะแนนสูงสุด</option>
+              <option value="price_asc">ราคาต่ำ-สูง</option>
+              <option value="price_desc">ราคาสูง-ต่ำ</option>
+              {nearbyMode && <option value="distance">ระยะทางใกล้สุด</option>}
+            </select>
+          </div>
         </div>
 
         <div className="ag-grid">
@@ -150,6 +223,14 @@ export default function AllStores() {
                     e.currentTarget.src = "/Nailshop/placeholder.jpg";
                   }}
                 />
+                {Number(s.avg_rating) > 0 && (
+                  <span className="ag-rating-chip">★ {Number(s.avg_rating).toFixed(1)}</span>
+                )}
+                {nearbyMode && (
+                  <span className={`ag-status-chip ${s.is_open ? "is-open" : "is-closed"}`}>
+                    {s.is_open ? "เปิดอยู่" : "ปิดแล้ว"}
+                  </span>
+                )}
               </div>
 
               <div className="ag-card-content">
@@ -169,11 +250,26 @@ export default function AllStores() {
 
                 </div>
 
+                {s.area && (
+                  <div className="ag-area-row">
+                    <FiMapPin /> {s.area}
+                  </div>
+                )}
+
+                {nearbyMode && (
+                  <div className="ag-area-row">
+                    <FiMapPin />
+                    {s.distance_km != null ? `ห่าง ${s.distance_km} กม.` : [s.district, s.province].filter(Boolean).join(" ")}
+                    {" · "}คิวว่าง {s.available_slots} คิว
+                  </div>
+                )}
+
                 <div className="price-row">
-                  <span className="price">฿{Number(s.price).toLocaleString()}</span>
+                  <span className="price-label">เริ่มต้น</span>
+                  <span className="price">฿{Number(s.price || 0).toLocaleString()}</span>
                 </div>
                 <Link to={`/store2/${s.store_id}`} className="ag-add-btn">
-                  {t("allstores_booking")}
+                  จองคิว
                 </Link>
               </div>
             </div>
@@ -196,17 +292,17 @@ export default function AllStores() {
           <div className="offer-image" data-aos="zoom-out-right" data-aos-delay="200">
             <img src="https://i.pinimg.com/736x/4b/c1/5b/4bc15bdb3aabb81077b49fcc066efb41.jpg" alt="special offer" />
             <div className="offer-text-box">
-              <h3>{t("allstores_special_offer")}</h3>
-              <p>Nail Art Session</p>
-              <button className="learn-more">{t("allstores_learn_more")}</button>
+              <h3>ข้อเสนอพิเศษ</h3>
+              <p>คอร์สทำลายเล็บ</p>
+              <button className="learn-more">ดูรายละเอียด</button>
             </div>
           </div>
           <div className="offer-content" data-aos="fade-left" data-aos-delay="400">
-            <h2>{language === "th" ? <>รับส่วนลด <strong>25%</strong></> : <>Get Discount <strong>25% Off</strong></>}</h2>
-            <p>{t("allstores_discount_desc")}</p>
+            <h2>รับส่วนลด <strong>25%</strong></h2>
+            <p>โปรโมชั่นพิเศษสำหรับการจองผ่านระบบออนไลน์วันนี้ รับส่วนลดทันทีสำหรับทุกบริการ</p>
             <div className="subscribe-box">
-              <input type="email" placeholder="Email Address" />
-              <button>{t("allstores_subscribe")}</button>
+              <input type="email" placeholder="อีเมล" />
+              <button>ติดตาม</button>
             </div>
           </div>
         </div>

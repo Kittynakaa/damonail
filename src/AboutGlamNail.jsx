@@ -36,20 +36,20 @@ export default function AboutGlamNail() {
       {/* --- HERO --- */}
       <section className="hero">
         <div className="container">
-          <span className="label-mini reveal">GlamNail Perspective</span>
-          <h1 className="reveal">The New Standard <br/> of Nail Booking</h1>
+          <span className="label-mini reveal">มุมมองของ Crystal Shine</span>
+          <h1 className="reveal">มาตรฐานใหม่ <br/> แห่งการจองทำเล็บ</h1>
           <p className="lead reveal">
-            GlamNail Studio คือแพลตฟอร์มที่ยกระดับประสบการณ์ความงาม 
-            ผสานเทคโนโลยี <b>AI Skin Analysis</b> เพื่อการเลือกเฉดสีที่สมบูรณ์แบบ 
+            Crystal Shine คือแพลตฟอร์มที่ยกระดับประสบการณ์ความงาม
+            ผสานเทคโนโลยี <b>AI วิเคราะห์สีผิว</b> เพื่อการเลือกเฉดสีที่สมบูรณ์แบบ
             และระบบการจองที่คัดสรรมาเพื่อไลฟ์สไตล์ที่ทันสมัย
           </p>
 
           <div className="chips reveal">
-            <div className="chip"> Smart Booking</div>
-            <div className="chip"> AI Color Palette</div>
-            <div className="chip"> Artisan Curation</div>
-            <div className="chip"> Exclusive Benefits</div>
-            <div className="chip"> Beauty Community</div>
+            <div className="chip"> จองคิวอัจฉริยะ</div>
+            <div className="chip"> จับคู่สี AI</div>
+            <div className="chip"> คัดสรรร้านคุณภาพ</div>
+            <div className="chip"> สิทธิพิเศษเฉพาะสมาชิก</div>
+            <div className="chip"> คอมมูนิตี้ความงาม</div>
           </div>
         </div>
       </section>
@@ -58,20 +58,20 @@ export default function AboutGlamNail() {
       <section className="section" style={{padding: '100px 0'}}>
         <div className="container">
           <div className="section-title-box reveal">
-            <span className="label-mini">Our Journey</span>
-            <h2 style={{fontFamily: 'Playfair Display', fontSize: '32px', textTransform:'uppercase' ,fontWeight:'300'}}>Evolution of Beauty</h2>
+            <span className="label-mini">เส้นทางของเรา</span>
+            <h2 style={{fontFamily: 'Playfair Display', fontSize: '32px', textTransform:'uppercase' ,fontWeight:'300'}}>วิวัฒนาการแห่งความงาม</h2>
           </div>
 
           <div className="timeline">
             {/* 2025 */}
             <article className="tl reveal">
-              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.58.42 AM.png" alt="2025 Start" />
+              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.58.42 AM.png" alt="จุดเริ่มต้นปี 2025" />
               <div>
-                <span className="label-mini">Phase 01</span>
-                <h3>2025 — The Genesis</h3>
-                <small>Prototype • Core Booking • Partner Network</small>
+                <span className="label-mini">เฟส 01</span>
+                <h3>2025 — จุดกำเนิด</h3>
+                <small>ต้นแบบระบบ • การจองหลัก • เครือข่ายพาร์ตเนอร์</small>
                 <p>
-                  จุดเริ่มต้นจากการแก้ปัญหาความแออัดหน้าร้าน สู่การสร้างระบบ Dashboard 
+                  จุดเริ่มต้นจากการแก้ปัญหาความแออัดหน้าร้าน สู่การสร้างระบบ Dashboard
                   แบบเรียลไทม์ที่ช่วยให้ช่างและลูกค้าสื่อสารกันได้อย่างไร้รอยต่อ
                 </p>
               </div>
@@ -79,13 +79,13 @@ export default function AboutGlamNail() {
 
             {/* 2026 */}
             <article className="tl reveal">
-              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.58.52 AM.png" alt="AI Analysis" />
+              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.58.52 AM.png" alt="วิเคราะห์ด้วย AI" />
               <div>
-                <span className="label-mini">Phase 02</span>
-                <h3>2026 — Intelligent Glow</h3>
-                <small>AI Skin Tone • Review Gallery • Loyalty</small>
+                <span className="label-mini">เฟส 02</span>
+                <h3>2026 — ความเปล่งประกายอัจฉริยะ</h3>
+                <small>วิเคราะห์โทนสีผิวด้วย AI • คลังรีวิว • สะสมแต้ม</small>
                 <p>
-                  เราเปิดตัว AI วิเคราะห์อันเดอร์โทนผิว เพื่อมอบคำแนะนำเฉดสีที่เป็นส่วนตัวที่สุด 
+                  เราเปิดตัว AI วิเคราะห์อันเดอร์โทนผิว เพื่อมอบคำแนะนำเฉดสีที่เป็นส่วนตัวที่สุด
                   พร้อมระบบรีวิวที่เน้นภาพผลงานจริงเพื่อความมั่นใจในทุกการจอง
                 </p>
               </div>
@@ -93,13 +93,13 @@ export default function AboutGlamNail() {
 
             {/* 2027 */}
             <article className="tl reveal">
-              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.59.16 AM.png" alt="Community" />
+              <img src="./icon/ภาพถ่ายหน้าจอ 2569-01-18 เวลา 1.59.16 AM.png" alt="คอมมูนิตี้" />
               <div>
-                <span className="label-mini">Phase 03</span>
-                <h3>2027 — Cultivating Community</h3>
-                <small>Trends • Workshops • Marketplace</small>
+                <span className="label-mini">เฟส 03</span>
+                <h3>2027 — สร้างคอมมูนิตี้</h3>
+                <small>เทรนด์ • เวิร์กช็อป • มาร์เก็ตเพลส</small>
                 <p>
-                  สร้างพื้นที่แห่งแรงบันดาลใจผ่านคอมมูนิตี้เทรนด์เล็บระดับสากล 
+                  สร้างพื้นที่แห่งแรงบันดาลใจผ่านคอมมูนิตี้เทรนด์เล็บระดับสากล
                   และเวิร์กช็อปร่วมกับศิลปินช่างทำเล็บชั้นนำ
                 </p>
               </div>
@@ -112,32 +112,32 @@ export default function AboutGlamNail() {
       <section className="section" style={{padding: '100px 0', borderTop: '1px solid var(--border)'}}>
         <div className="container">
           <div className="section-title-box reveal">
-            <span className="label-mini">Behind The Vision</span>
-            <h2 style={{fontFamily: 'Playfair Display', fontSize: '32px', textTransform:'uppercase',fontWeight:'300'}}>Our Collective</h2>
+            <span className="label-mini">เบื้องหลังวิสัยทัศน์</span>
+            <h2 style={{fontFamily: 'Playfair Display', fontSize: '32px', textTransform:'uppercase',fontWeight:'300'}}>ทีมของเรา</h2>
           </div>
-          
+
           <div className="team-grid">
             <div className="card reveal">
-              <img src="./icon/kitty.JPG" alt="Developer 1" />
+              <img src="./icon/kitty.JPG" alt="นักพัฒนา 1" />
               <h4>Chakrit Uamom</h4>
-              <p>System Architect • UX & Frontend</p>
+              <p>สถาปนิกระบบ • UX & Frontend</p>
             </div>
             <div className="card reveal">
-              <img src="./icon/pang.png" alt="Developer 2" />
+              <img src="./icon/pang.png" alt="นักพัฒนา 2" />
               <h4>Apisara Nakhonsuk</h4>
-              <p>Backend Strategy • AI Module Lead</p>
+              <p>กลยุทธ์ Backend • หัวหน้าโมดูล AI</p>
             </div>
             <div className="card reveal">
-              <img src="./icon/io.png" alt="Advisor" />
+              <img src="./icon/io.png" alt="ที่ปรึกษา" />
               <h4>Asst. Prof. Dr. Isun</h4>
-              <p>Research Consultant • Academic Advisor</p>
+              <p>ที่ปรึกษาด้านการวิจัย • ที่ปรึกษาทางวิชาการ</p>
             </div>
           </div>
         </div>
       </section>
 
       <footer style={{textAlign: 'center', padding: '60px 0', fontSize: '10px', color: '#999', letterSpacing: '2px'}}>
-        © 2026 GLAMNAIL STUDIO. ALL RIGHTS RESERVED.
+        © 2026 CRYSTAL SHINE. สงวนลิขสิทธิ์
       </footer>
     </div>
   );

@@ -18,24 +18,6 @@
   padding: 80px 40px;
 }
 
-/* --- Editorial Header --- */
-.ag-header-editorial {
-  border-bottom: 2px solid var(--ink-black);
-  padding-bottom: 30px;
-  margin-bottom: 60px;
-  text-align: left;
-  padding-top: 10px;
-}
-
-.editorial-tag {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  color: var(--soft-gray);
-  display: block;
-  margin-bottom: 10px;
-  padding-bottom: 40px;
-}
 
 /* --- Main Grid Layout --- */
 .ag-main-layout {

@@ -1,0 +1,481 @@
+/* ===== Layout (เหมือนแพทเทิร์น StaffLayout.css / navadmin.css) ===== */
+.sysadmin-root {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fffafd, #fff1f6);
+  font-family: "Prompt", sans-serif;
+}
+
+.sysadmin-sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #fff7fb 0%, #ffeef5 100%);
+  color: #7a5263;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.sysadmin-logo {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #c46f91;
+}
+
+.sysadmin-logo.sysadmin-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sysadmin-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.sysadmin-menu a {
+  color: #7a5263;
+  padding: 0.55rem 0.9rem;
+  border-radius: 14px;
+  text-decoration: none;
+  margin-bottom: 4px;
+  font-size: 0.88rem;
+  transition: 0.25s;
+}
+
+.sysadmin-menu a.active,
+.sysadmin-menu a:hover {
+  background: linear-gradient(135deg, #efa3c0, #d9789c);
+  color: white;
+  box-shadow: 0 12px 28px rgba(217, 122, 156, 0.22);
+}
+
+.sysadmin-exit-btn {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #e4b9c9;
+  color: #9a5f78;
+  padding: 0.6rem 1rem;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: 0.25s;
+}
+
+.sysadmin-exit-btn:hover {
+  background: #ffe3ec;
+  border-color: #d9789c;
+  color: #c46f91;
+}
+
+.sysadmin-content {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 48px 48px;
+  margin-left: 240px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sysadmin-content::-webkit-scrollbar {
+  display: none;
+}
+
+.sysadmin-content {
+  scrollbar-width: none;
+}
+
+/* ===== Page shell ===== */
+.sysadmin-page {
+  width: 100%;
+  min-width: 0;
+}
+
+.sysadmin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.sysadmin-page-header h1 {
+  color: #c06f8e;
+  font-size: 1.6rem;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.sysadmin-page-header p {
+  color: #90707d;
+  margin: 0;
+}
+
+.sysadmin-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sysadmin-header-actions select,
+.sysadmin-header-actions input {
+  border: 1px solid #f0d8e2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: #fff;
+}
+
+/* ===== Stat cards ===== */
+.sysadmin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 1100px) {
+  .sysadmin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sysadmin-card {
+  min-width: 0;
+  background: #fff;
+  padding: 18px 22px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.sysadmin-stats-grid .sysadmin-card {
+  margin-bottom: 0;
+}
+
+.sysadmin-card h2 {
+  margin: 4px 0 0;
+  font-size: 1.5rem;
+  color: #111;
+}
+
+.sysadmin-card-label {
+  color: #8f7380;
+  font-size: 0.85rem;
+  margin: 0 0 4px;
+}
+
+/* ===== Table ===== */
+.sysadmin-table-wrap {
+  width: 100%;
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(255, 183, 212, 0.16);
+}
+
+.sysadmin-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff7fb;
+  border: 1px solid #f0d8e2;
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  max-width: 420px;
+}
+
+.sysadmin-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #684d59;
+}
+
+.sysadmin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.sysadmin-table th,
+.sysadmin-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #f4e9ef;
+  text-align: left;
+  vertical-align: top;
+  color: #7a6870;
+}
+
+.sysadmin-table th {
+  font-size: 0.85rem;
+  color: #9f9198;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sysadmin-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: #a98b98;
+  font-size: 13px;
+}
+
+/* ===== Status badges (reused for store/user/complaint/review states) ===== */
+.sysadmin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sysadmin-badge.active,
+.sysadmin-badge.resolved,
+.sysadmin-badge.ok {
+  background: #e6f7ea;
+  color: #2f9d57;
+}
+
+.sysadmin-badge.pending,
+.sysadmin-badge.open {
+  background: #fff1be;
+  color: #c18700;
+}
+
+.sysadmin-badge.rejected,
+.sysadmin-badge.banned,
+.sysadmin-badge.hidden,
+.sysadmin-badge.closed {
+  background: #ffe6ea;
+  color: #d95b74;
+}
+
+.sysadmin-badge.review,
+.sysadmin-badge.in_review {
+  background: #ffe9d6;
+  color: #c1701f;
+}
+
+.sysadmin-badge.neutral {
+  background: #eef1f5;
+  color: #647089;
+}
+
+/* ===== Buttons ===== */
+.sysadmin-btn {
+  border: 1px solid #f0d8e2;
+  background: #fff7fb;
+  color: #b76585;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.sysadmin-btn:hover {
+  background: #ffeef5;
+}
+
+.sysadmin-btn.primary {
+  background: linear-gradient(135deg, #efa3c0, #d9789c);
+  color: #fff;
+  border: none;
+}
+
+.sysadmin-btn.danger {
+  background: #fff0f2;
+  color: #d9476a;
+  border-color: #f6c6d0;
+}
+
+.sysadmin-btn.danger:hover {
+  background: #ffe1e6;
+}
+
+.sysadmin-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.sysadmin-row-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ===== Modal ===== */
+.sysadmin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(104, 77, 89, 0.3);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.sysadmin-modal {
+  background: #fff;
+  border-radius: 22px;
+  padding: 26px 28px;
+  width: 460px;
+  max-width: 92vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(221, 173, 194, 0.3);
+}
+
+.sysadmin-modal h3 {
+  margin: 0 0 16px;
+  color: #c06f8e;
+}
+
+.sysadmin-modal label {
+  display: block;
+  font-size: 0.85rem;
+  color: #8f7380;
+  margin: 12px 0 4px;
+}
+
+.sysadmin-modal input,
+.sysadmin-modal select,
+.sysadmin-modal textarea {
+  width: 100%;
+  border: 1px solid #f0d8e2;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.sysadmin-modal textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* index.css ตั้ง width:100% ให้ input ทุกตัวรวมถึง checkbox -- ต้องรีเซ็ตเอง
+   (เจอบั๊กนี้มาแล้วตอนทำหน้าพนักงาน ดู StaffSchedule.css) */
+.sysadmin-modal input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
+  accent-color: #d9789c;
+}
+
+.sysadmin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.sysadmin-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5e6ec;
+  font-size: 0.88rem;
+}
+
+.sysadmin-detail-row:last-child {
+  border-bottom: none;
+}
+
+.sysadmin-detail-row span:first-child {
+  color: #8f7380;
+  flex-shrink: 0;
+}
+
+.sysadmin-detail-row span:last-child {
+  text-align: right;
+  color: #333;
+}
+
+/* ===== Pagination (same shape as the rest of the app) ===== */
+.sysadmin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.sysadmin-page-num-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: 1px solid #f0d8e2;
+  background: #fff;
+  color: #7a5263;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: grid;
+  place-items: center;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.sysadmin-page-num-btn:hover:not(.active) {
+  background: #ffeef5;
+  border-color: #e4b9c9;
+}
+
+.sysadmin-page-num-btn.active {
+  background: linear-gradient(135deg, #d98bab, #c06f8e);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* ===== Tabs (used by Permissions page: bans vs role-permission) ===== */
+.sysadmin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sysadmin-tab-btn {
+  border: 1px solid #f0d8e2;
+  background: #fff;
+  color: #7a5263;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.sysadmin-tab-btn.active {
+  background: linear-gradient(135deg, #efa3c0, #d9789c);
+  color: #fff;
+  border-color: transparent;
+}

@@ -1,6 +1,5 @@
 import axios from "axios";
-// const API = "http://localhost:5010";
-const api ="https://backend-gold-kappa-26.vercel.app"
+const api = "http://localhost:5010";
 // ===============================
 // GET SERVICE BY STORE
 // ===============================

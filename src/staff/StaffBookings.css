@@ -1,0 +1,28 @@
+/* ManageBookings.css ใช้ table-layout: fixed กับ nth-child ที่ออกแบบมาสำหรับ
+   ตาราง 8 คอลัมน์ของแอดมิน (มีคอลัมน์ "พนักงาน") ตารางฝั่งพนักงานตัดคอลัมน์นั้น
+   ออกเหลือ 7 คอลัมน์ ทำให้ nth-child เดิมจับผิดคอลัมน์ -- คอลัมน์การดำเนินการ
+   (นิ้วชี้ที่ 7) ดันไปได้ความกว้างของคอลัมน์ "สถานะ" เดิม (8%, ไม่ nowrap) ซึ่ง
+   แคบเกินไปสำหรับปุ่มไอคอน 4 ปุ่ม ทำให้ล้นออกนอกการ์ด จึงต้อง map ความกว้างใหม่
+   ให้ตรงกับคอลัมน์ที่ตำแหน่งเดียวกันของแอดมิน (nth-child 5-8 เดิม) */
+.manage-bookings-page.staff-bookings-page .service-table th:nth-child(4),
+.manage-bookings-page.staff-bookings-page .service-table td:nth-child(4) {
+  width: 11%;
+  white-space: nowrap;
+}
+
+.manage-bookings-page.staff-bookings-page .service-table th:nth-child(5),
+.manage-bookings-page.staff-bookings-page .service-table td:nth-child(5) {
+  width: 8%;
+  white-space: nowrap;
+}
+
+.manage-bookings-page.staff-bookings-page .service-table th:nth-child(6),
+.manage-bookings-page.staff-bookings-page .service-table td:nth-child(6) {
+  width: 8%;
+}
+
+.manage-bookings-page.staff-bookings-page .service-table th:nth-child(7),
+.manage-bookings-page.staff-bookings-page .service-table td:nth-child(7) {
+  width: 17%;
+  white-space: nowrap;
+}

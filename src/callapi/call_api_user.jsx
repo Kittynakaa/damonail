@@ -1,7 +1,6 @@
 import axios from "axios";
 // let api = "http://127.0.0.1:8000";
-// let api = "http://localhost:5010";
-const api ="https://backend-gold-kappa-26.vercel.app"
+let api = "http://localhost:5010";
 // import DatatableStrig from "../component/strig";
 export async function GetLogin(email, password) {
   try {

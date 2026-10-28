@@ -26,6 +26,12 @@
     margin-bottom: 2rem;
     color: #c46f91;
   }
+
+  .sidebar .logo.logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   
   .sidebar .menu {
     display: flex;
@@ -46,6 +52,28 @@
     background: linear-gradient(135deg, #efa3c0, #d9789c);
     color: white;
     box-shadow: 0 12px 28px rgba(217, 122, 156, 0.22);
+  }
+
+  .sidebar-exit-btn {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #e4b9c9;
+    color: #9a5f78;
+    padding: 0.6rem 1rem;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: 0.25s;
+  }
+
+  .sidebar-exit-btn:hover {
+    background: #ffe3ec;
+    border-color: #d9789c;
+    color: #c46f91;
   }
   
   /* ===== Dashboard ===== */
@@ -90,6 +118,7 @@
 
 .dashboard > .manage .header,
 .dashboard > .schedule-root .header,
+.dashboard > .schedule-root .schedule-stats-bar,
 .dashboard > .promotion-page .header,
 .dashboard > .report-page .header,
 .dashboard > .settings-page .title,

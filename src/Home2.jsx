@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getClick_log } from "./callapi/call_api_home.jsx";
 import "./Home2.css";
 
-const IMAGE_BASE_URL = "https://backend-gold-kappa-26.vercel.app/static/images";
+const IMAGE_BASE_URL = "http://localhost:5010/static/images";
 
 export default function Home2() {
   const [searchArea, setSearchArea] = useState("");
@@ -59,7 +59,7 @@ export default function Home2() {
         distance: 0.9,
         img: "/Nailshop/Nailshop7.jpg",
         times: ["14:00", "15:30", "17:00"],
-        badge: "Top Rated",
+        badge: "อันดับต้น",
       },
       {
         id: "s-2",
@@ -70,7 +70,7 @@ export default function Home2() {
         distance: 3.2,
         img: "/Nailshop/Nailshop9.jpg",
         times: ["13:00", "16:00", "18:30"],
-        badge: "Promo",
+        badge: "โปรโมชั่น",
       },
       {
         id: "s-3",
@@ -81,7 +81,7 @@ export default function Home2() {
         distance: 1.5,
         img: "/Nailshop/Nailshop8.jpg",
         times: ["11:30", "15:00", "19:00"],
-        badge: "New",
+        badge: "ใหม่",
       },
     ],
     []
@@ -114,16 +114,16 @@ export default function Home2() {
       <div className="marquee-strip">
         <div className="marquee-track">
           <div className="marquee-content">
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
           </div>
           <div className="marquee-content" aria-hidden="true">
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
-            <span>AI SKIN TONE ANALYSIS ✹ HIGH-END NAIL STUDIOS ✹ PRECISE COLOR MATCHING ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
+            <span>AI วิเคราะห์สีผิว ✹ สตูดิโอทำเล็บระดับพรีเมียม ✹ จับคู่สีแม่นยำ ✹</span>
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function Home2() {
         <div className="search-card-editorial">
           <div className="search-grid">
             <div className="search-field">
-              <label>Location</label>
+              <label>สถานที่</label>
               <input
                 type="text"
                 placeholder="สยาม, อารีย์..."
@@ -144,7 +144,7 @@ export default function Home2() {
               />
             </div>
             <div className="search-field">
-              <label>Date</label>
+              <label>วันที่</label>
               <input
                 type="date"
                 value={searchDate}
@@ -152,7 +152,7 @@ export default function Home2() {
               />
             </div>
             <div className="search-field">
-              <label>Service</label>
+              <label>บริการ</label>
               <select
                 value={searchService}
                 onChange={(e) => setSearchService(e.target.value)}
@@ -164,7 +164,7 @@ export default function Home2() {
               </select>
             </div>
             <button className="search-submit-btn" onClick={goSearch}>
-              FIND SLOTS
+              ค้นหาคิวว่าง
             </button>
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function Home2() {
       <section id="popular" style={{ padding: "100px 0" }}>
         <div className="container">
           <div className="section-header-editorial">
-            <h2 className="playfair-title">Popular Selection</h2>
+            <h2 className="playfair-title">ร้านยอดนิยม</h2>
             <p className="cormorant-subtitle">
               สตูดิโอยอดนิยมที่ได้รับการจัดอันดับสูงสุดในสัปดาห์นี้
             </p>
@@ -191,7 +191,7 @@ export default function Home2() {
                           e.currentTarget.src = "/Nailshop/placeholder.jpg";
                         }}
                       />
-                    <span className="badge-luxury">HOT</span>
+                    <span className="badge-luxury">มาแรง</span>
                   </div>
                   <div className="st-content">
                     <h3>{p.store_name}</h3>
@@ -214,9 +214,9 @@ export default function Home2() {
         >
           <div className="category-card" style={{ textAlign: "center" }}>
             <div className="img-frame">
-              <img src="/Nailshop/store.jpg" alt="Luxury Studios" />
+              <img src="/Nailshop/store.jpg" alt="สตูดิโอระดับพรีเมียม" />
             </div>
-            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>STORES</h4>
+            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>ร้านค้า</h4>
             <p style={{ fontSize: "14px", color: "#666", lineHeight: "1.6" }}>
               รวมสตูดิโอทำเล็บระดับพรีเมียม การันตีคุณภาพและงานดีไซน์ที่ประณีต
             </p>
@@ -227,9 +227,9 @@ export default function Home2() {
 
           <div className="category-card" style={{ textAlign: "center" }}>
             <div className="img-frame">
-              <img src="/Nailshop/nailai.jpg" alt="AI Color" />
+              <img src="/Nailshop/nailai.jpg" alt="สี AI" />
             </div>
-            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>AI COLOR</h4>
+            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>สี AI</h4>
             <p style={{ fontSize: "14px", color: "#666", lineHeight: "1.6" }}>
               วิเคราะห์ Undertone ของคุณ เพื่อค้นหาสีเล็บที่ช่วยขับผิวให้ดูโดดเด่น
             </p>
@@ -240,9 +240,9 @@ export default function Home2() {
 
           <div className="category-card" style={{ textAlign: "center" }}>
             <div className="img-frame">
-              <img src="/Nailshop/nailshap.jpg" alt="Nail Shapes" />
+              <img src="/Nailshop/nailshap.jpg" alt="ทรงเล็บ" />
             </div>
-            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>SHAPES</h4>
+            <h4 style={{ fontSize: "24px", letterSpacing: "2px" }}>ทรงเล็บ</h4>
             <p style={{ fontSize: "14px", color: "#666", lineHeight: "1.6" }}>
               จาก Oval ถึง Coffin ค้นหาทรงเล็บที่ช่วยให้มือของคุณดูเรียวยาวและสวยงาม
             </p>
@@ -300,13 +300,13 @@ export default function Home2() {
         <div className="container">
           <div className="editorial-head">
             <div>
-              <h2 className="playfair-title">Local Favorites</h2>
+              <h2 className="playfair-title">ร้านแนะนำประจำย่าน</h2>
               <p className="cormorant-subtitle">
                 คัดสรรร้านแนะนำที่อยู่ใกล้ตำแหน่งปัจจุบันของคุณ
               </p>
             </div>
             <Link className="editorial-link" to="/AllStores">
-              Explore More →
+              ดูเพิ่มเติม →
             </Link>
           </div>
 
@@ -346,10 +346,10 @@ export default function Home2() {
 
                   <div className="luxury-cta">
                     <Link className="btn-outline-thin" to="/store2" state={{ storeId: s.id }}>
-                      DETAILS
+                      ดูรายละเอียด
                     </Link>
                     <Link className="btn-black-thin" to="#">
-                      BOOK NOW
+                      จองเลย
                     </Link>
                   </div>
                 </div>
@@ -362,10 +362,10 @@ export default function Home2() {
       <section className="ai-section-luxury">
         <div className="container ai-editorial-grid">
           <div className="ai-text-side">
-            <span className="editorial-tag">Innovation</span>
+            <span className="editorial-tag">นวัตกรรม</span>
             <h2 className="playfair-title" style={{ fontSize: "48px" }}>
-              AI-Driven <br />
-              Beauty Analysis
+              AI วิเคราะห์<br />
+              ความงาม
             </h2>
             <p className="ai-manifesto">
               เพราะเราเชื่อว่าเล็บที่สวยที่สุดคือเล็บที่รับกับตัวตนของคุณ ระบบ AI ของเราจะช่วยวิเคราะห์
@@ -373,11 +373,11 @@ export default function Home2() {
             </p>
             <div className="ai-feature-list">
               <div className="feature-item">
-                <h4>01 / Skin Tone Match</h4>
+                <h4>01 / จับคู่โทนสีผิว</h4>
                 <p>ค้นหาเฉดสีที่ช่วยขับผิวให้ดูสว่างและสุขภาพดี</p>
               </div>
               <div className="feature-item">
-                <h4>02 / Hand Shape Analysis</h4>
+                <h4>02 / วิเคราะห์รูปทรงมือ</h4>
                 <p>แนะนำทรงเล็บที่ช่วยให้นิ้วดูเรียวยาวและสมส่วน</p>
               </div>
             </div>
@@ -393,7 +393,7 @@ export default function Home2() {
       <section className="nail-shapes-editorial" style={{ padding: "120px 0", background: "#fff" }}>
         <div className="container">
           <div className="section-header-editorial center">
-            <h2 className="playfair-title">The Art of Shapes</h2>
+            <h2 className="playfair-title">ศิลปะแห่งทรงเล็บ</h2>
             <p className="cormorant-subtitle">
               ค้นพบรูปทรงที่เหมาะกับบุคลิกและลักษณะมือของคุณ
             </p>
@@ -421,14 +421,14 @@ export default function Home2() {
       <section className="cta-minimal">
         <div className="container">
           <div className="cta-box-editorial">
-            <h2 className="playfair-title">Join our Curated Network</h2>
+            <h2 className="playfair-title">เข้าร่วมเครือข่ายพาร์ตเนอร์ของเรา</h2>
             <p>
               คุณเป็นเจ้าของสตูดิโอทำเล็บที่ใส่ใจในงานศิลปะใช่หรือไม่?
               <br />
               มาร่วมเป็นส่วนหนึ่งของแพลตฟอร์มที่รวบรวมร้านระดับพรีเมียมที่สุด
             </p>
             <Link to="/addStore" className="btn-luxury-outline">
-              Apply as Partner
+              สมัครเป็นพาร์ตเนอร์
             </Link>
           </div>
         </div>

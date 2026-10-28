@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useLanguage } from "../i18n.jsx";
+import NotificationBell from "./NotificationBell";
 import "./Navbar.css";
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"></link>
-const logo = "/Logo/logoweb.png";
 
 /* ===== helpers ===== */
 function getInitials(name) {
@@ -23,7 +21,6 @@ function colorFromString(str = "user") {
 }
 
 export default function Navbar() {
-  const { language, setLanguage, t } = useLanguage();
   const [user, setUser] = useState(null);
   const [avatarOk, setAvatarOk] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,6 +66,7 @@ export default function Navbar() {
 
   const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     setMenuOpen(false);
     setProfileOpen(false);
@@ -80,43 +78,39 @@ export default function Navbar() {
       <div className="navbar-inner navbar-container">
         {/* logo */}
         <Link to="/" className="navbar-logo">
-          <img src={logo} alt="NailShop" className="navbar-logo-img" height={40} />
+          <picture>
+            <source srcSet="/Logo/logoweb.webp" type="image/webp" />
+            <img
+              src="/Logo/logoweb-sm.png"
+              alt="Crystal Shine"
+              className="navbar-logo-img"
+              width={37}
+              height={40}
+              fetchPriority="high"
+            />
+          </picture>
         </Link>
 
         {/* desktop menu */}
         <nav className="navbar-center">
-          <Link to="/AllStores">{t("nav_all_stores")}</Link>
-          <Link to="/analyze">{t("nav_analyze")}</Link>
-          <Link to="/Articles">{t("nav_articles")}</Link>
-          <Link to="/helpCenter">{t("nav_contact")}</Link>
-          <Link to="/aboutGlamNail">{t("nav_about")}</Link>
+          <Link to="/AllStores">ร้านทั้งหมด</Link>
+          <Link to="/analyze">แนะนำสีเล็บ</Link>
+          <Link to="/Articles">บทความดูแลเล็บ</Link>
+          <Link to="/helpCenter">ติดต่อเรา</Link>
+          <Link to="/aboutGlamNail">เกี่ยวกับเรา</Link>
         </nav>
 
         {/* right */}
         <div className="navbar-right">
-          <div className="language-switch" role="group" aria-label="Language switcher">
-            <button
-              type="button"
-              className={language === "th" ? "active" : ""}
-              onClick={() => setLanguage("th")}
-            >
-              TH
-            </button>
-            <button
-              type="button"
-              className={language === "en" ? "active" : ""}
-              onClick={() => setLanguage("en")}
-            >
-              EN
-            </button>
-          </div>
-
           {/* login (desktop only – คุมด้วย CSS) */}
           {!user && (
             <Link to="/register" className="login-btn">
-              {t("nav_login")}
+              เข้าสู่ระบบ
             </Link>
           )}
+
+          {/* notifications */}
+          {user && <NotificationBell linkTo="/UserProfile" />}
 
           {/* profile (clickable) */}
           {user && (
@@ -143,17 +137,17 @@ export default function Navbar() {
                     {initials}
                   </div>
                 )}
-                <span className="navbar-profile-name">{user.name || t("nav_profile")}</span>
+                <span className="navbar-profile-name">{user.name || "โปรไฟล์ของฉัน"}</span>
                 <span className={`profile-caret ${profileOpen ? "open" : ""}`} aria-hidden="true" />
               </button>
 
               {profileOpen && (
                 <div className="profile-dropdown profile-dropdown-open" role="menu">
                   <Link to="/UserProfile" className="profile-dropdown-item" onClick={() => setProfileOpen(false)}>
-                    {t("nav_profile")}
+                    โปรไฟล์ของฉัน
                   </Link>
                   <button type="button" className="profile-dropdown-item danger" onClick={logout}>
-                    {t("nav_logout")}
+                    ออกจากระบบ
                   </button>
                 </div>
               )}
@@ -176,38 +170,34 @@ export default function Navbar() {
       {/* ===== mobile menu ===== */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <nav className="mobile-nav">
-          <div className="mobile-language-switch">
-            <button type="button" className={language === "th" ? "active" : ""} onClick={() => setLanguage("th")}>TH</button>
-            <button type="button" className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>EN</button>
-          </div>
           <Link to="/AllStores" onClick={() => setMenuOpen(false)}>
-            {t("nav_all_stores")}
+            ร้านทั้งหมด
           </Link>
           <Link to="/analyze" onClick={() => setMenuOpen(false)}>
-            {t("nav_analyze")}
+            แนะนำสีเล็บ
           </Link>
           <Link to="/Articles" onClick={() => setMenuOpen(false)}>
-            {t("nav_articles")}
+            บทความดูแลเล็บ
           </Link>
           <Link to="/helpCenter" onClick={() => setMenuOpen(false)}>
-            {t("nav_contact")}
+            ติดต่อเรา
           </Link>
           <Link to="/aboutGlamNail" onClick={() => setMenuOpen(false)}>
-            {t("nav_about")}
+            เกี่ยวกับเรา
           </Link>
 
           {user ? (
             <>
               <Link to="/UserProfile" onClick={() => setMenuOpen(false)}>
-                {t("nav_profile")}
+                โปรไฟล์ของฉัน
               </Link>
               <button className="mobile-logout" onClick={logout}>
-                {t("nav_logout")}
+                ออกจากระบบ
               </button>
             </>
           ) : (
             <Link to="/register" onClick={() => setMenuOpen(false)}>
-              {t("nav_login")}
+              เข้าสู่ระบบ
             </Link>
           )}
         </nav>

@@ -164,7 +164,7 @@
   }
   
   /* ===== Modal ===== */
-  .modal-overlay {
+.promotion-modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.35);
@@ -172,54 +172,68 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 24px;
   }
   
-  .modal {
+  .promotion-modal {
     background: rgba(255, 255, 255, 0.94);
     border-radius: 24px;
     padding: 22px;
     width: 440px;
+    max-width: min(440px, 100%);
+    max-height: calc(100vh - 48px);
     box-shadow: 0 24px 60px rgba(148, 114, 127, 0.22);
     animation: fadeIn 0.3s ease;
     border: 1px solid rgba(209, 139, 170, 0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
   
-  .modal-header {
+  .promotion-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  .modal-body {
+  .promotion-modal-body {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 14px;
+    overflow-y: auto;
+    padding-right: 4px;
+    min-height: 0;
   }
   
-  .modal-body input,
-  .modal-body textarea,
-  .modal-body select {
+  .promotion-modal-body input,
+  .promotion-modal-body textarea,
+  .promotion-modal-body select {
     border: 1px solid rgba(209, 139, 170, 0.18);
     border-radius: 14px;
-    padding: 8px 10px;
+    padding: 10px 12px;
     font-family: "Prompt", sans-serif;
     background: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    box-sizing: border-box;
   }
   
-  .modal-body textarea {
+  .promotion-modal-body textarea {
     resize: none;
     height: 80px;
   }
   
-  .modal-actions {
+  .promotion-modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(209, 139, 170, 0.14);
+    flex-shrink: 0;
   }
   
-  .save-btn {
+  .promotion-save-btn {
     background: var(--brand);
     color: #fff;
     border: none;
@@ -231,7 +245,7 @@
     gap: 6px;
   }
   
-  .cancel-btn {
+  .promotion-cancel-btn {
     background: #fff1f6;
     border: none;
     border-radius: 12px;
@@ -239,7 +253,7 @@
     cursor: pointer;
   }
   
-  .close-btn {
+  .promotion-close-btn {
     border: none;
     background: none;
     font-size: 20px;

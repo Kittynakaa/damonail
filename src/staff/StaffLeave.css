@@ -1,0 +1,156 @@
+.staff-leave-page {
+  width: 100%;
+}
+
+.staff-leave-page .header {
+  margin-bottom: 22px;
+}
+
+.staff-leave-page h1 {
+  color: #c06f8e;
+  font-size: 2rem;
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.staff-leave-page .header p {
+  color: #9d8f96;
+  margin: 0;
+}
+
+.staff-leave-card {
+  width: 100%;
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(255, 183, 212, 0.16);
+  margin-bottom: 20px;
+}
+
+.staff-leave-card h3 {
+  margin: 0 0 14px;
+  color: #684d59;
+}
+
+.staff-leave-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 360px;
+}
+
+.staff-leave-form label {
+  font-size: 0.85rem;
+  color: #8f7380;
+  margin-top: 8px;
+}
+
+.staff-leave-form select,
+.staff-leave-form input {
+  border: 1px solid #f0d8e2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.staff-leave-submit {
+  margin-top: 16px;
+  border: none;
+  background: linear-gradient(135deg, #efa3c0, #d9789c);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.staff-leave-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.staff-empty {
+  color: #9d8f96;
+  font-size: 0.9rem;
+}
+
+.staff-leave-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.staff-leave-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #f1e3ec;
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+.staff-leave-item-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.staff-leave-item-meta {
+  font-size: 0.85rem;
+  color: #8f7380;
+}
+
+.staff-leave-item-reason {
+  font-size: 0.82rem;
+  color: #a98b98;
+  margin-top: 2px;
+}
+
+.staff-leave-cancel-btn {
+  border: 1px solid #f0d8e2;
+  background: #fff7fb;
+  color: #b76585;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.staff-leave-cancel-btn:hover {
+  background: #ffeef5;
+}
+
+.leave-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.leave-status.leave-pending {
+  background: #fff1be;
+  color: #c18700;
+}
+
+.leave-status.leave-active {
+  background: #e6f7ea;
+  color: #2f9d57;
+}
+
+.leave-status.leave-rejected {
+  background: #ffe6ea;
+  color: #d95b74;
+}
+
+.leave-status.leave-cancelled {
+  background: #eee;
+  color: #888;
+}

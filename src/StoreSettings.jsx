@@ -4,6 +4,8 @@ import "./StoreSettings.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+import StoreLocationMap from "./components/StoreLocationMap";
 
 export default function StoreSettings() {
   const [activeTab, setActiveTab] = useState("info");
@@ -23,8 +25,11 @@ export default function StoreSettings() {
     street: "",
     open_time: "",
     close_time: "",
-    recommend_text: ""
+    recommend_text: "",
+    latitude: "",
+    longitude: ""
   });
+  const [savingLocation, setSavingLocation] = useState(false);
   useEffect(() => {
     if (!storeId) return;
   
@@ -52,6 +57,8 @@ export default function StoreSettings() {
           status_store_id: data.status_store_id || "",
           open_time: data.open_time ? data.open_time.slice(0,5) : "",
           close_time: data.close_time ? data.close_time.slice(0,5) : "",
+          latitude: data.latitude != null ? String(data.latitude) : "",
+          longitude: data.longitude != null ? String(data.longitude) : "",
         });
   
       } catch (err) {
@@ -71,6 +78,31 @@ export default function StoreSettings() {
       alert("บันทึกสำเร็จ");
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const DEFAULT_MAP_CENTER = { lat: 13.7563, lng: 100.5018 }; // กรุงเทพฯ
+  const mapLat = storeData.latitude !== "" ? Number(storeData.latitude) : DEFAULT_MAP_CENTER.lat;
+  const mapLng = storeData.longitude !== "" ? Number(storeData.longitude) : DEFAULT_MAP_CENTER.lng;
+  const handlePinChange = ({ lat, lng }) =>
+    setStoreData((s) => ({ ...s, latitude: lat.toFixed(6), longitude: lng.toFixed(6) }));
+
+  const handleSaveLocation = async () => {
+    const latitude = Number(storeData.latitude);
+    const longitude = Number(storeData.longitude);
+    if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
+      Swal.fire("ข้อมูลไม่ถูกต้อง", "กรุณาระบุละติจูดและลองจิจูดเป็นตัวเลข", "warning");
+      return;
+    }
+    setSavingLocation(true);
+    try {
+      await axios.put(`http://localhost:5010/store/${storeId}/location`, { latitude, longitude });
+      Swal.fire({ icon: "success", title: "บันทึกตำแหน่งร้านสำเร็จ", toast: true, position: "top-end", timer: 1800, showConfirmButton: false });
+    } catch (err) {
+      console.error(err);
+      Swal.fire("บันทึกไม่สำเร็จ", err.response?.data?.error || "เกิดข้อผิดพลาด กรุณาลองใหม่", "warning");
+    } finally {
+      setSavingLocation(false);
     }
   };
 
@@ -191,6 +223,36 @@ export default function StoreSettings() {
               </button>
               <button className="btn-reset">รีเซ็ตค่าเริ่มต้น</button>
             </div>
+
+            <h3 style={{ marginTop: 32 }}>ปักหมุดตำแหน่งร้านบนแผนที่</h3>
+            <div className="form-grid">
+              <div className="col-1">
+                <label>ละติจูด (Latitude)</label>
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="เช่น 16.48408"
+                  value={storeData.latitude}
+                  onChange={(e) => setStoreData({ ...storeData, latitude: e.target.value })}
+                />
+                <label>ลองจิจูด (Longitude)</label>
+                <input
+                  type="number"
+                  step="any"
+                  placeholder="เช่น 102.82000"
+                  value={storeData.longitude}
+                  onChange={(e) => setStoreData({ ...storeData, longitude: e.target.value })}
+                />
+              </div>
+              <div className="col-2">
+                <StoreLocationMap lat={mapLat} lng={mapLng} draggable onChange={handlePinChange} height="220px" />
+              </div>
+            </div>
+            <div className="actions">
+              <button className="btn-save" onClick={handleSaveLocation} disabled={savingLocation}>
+                {savingLocation ? "กำลังบันทึก..." : "บันทึกตำแหน่งร้าน"}
+              </button>
+            </div>
           </div>
         )}
 
@@ -200,16 +262,16 @@ export default function StoreSettings() {
             <h3>ทีมงาน</h3>
             <div className="team-list">
               {[
-                { name: "วิภา ศิลป์สวย", email: "wipa@email.com", role: "Staff" },
-                { name: "สุชา เส้นสวย", email: "suda@email.com", role: "Staff" },
-                { name: "นิภา ดีไซน์", email: "nipa@email.com", role: "Manager" },
+                { name: "วิภา ศิลป์สวย", email: "wipa@email.com", role: "พนักงาน" },
+                { name: "สุชา เส้นสวย", email: "suda@email.com", role: "พนักงาน" },
+                { name: "นิภา ดีไซน์", email: "nipa@email.com", role: "ผู้จัดการ" },
               ].map((member, i) => (
                 <div className="team-item" key={i}>
                   <div>
                     <strong>{member.name}</strong>
                     <p>{member.email}</p>
                   </div>
-                  <span className={`badge ${member.role === "Manager" ? "manager" : ""}`}>
+                  <span className={`badge ${member.role === "ผู้จัดการ" ? "manager" : ""}`}>
                     {member.role}
                   </span>
                 </div>
@@ -233,7 +295,7 @@ export default function StoreSettings() {
                 </select>
 
                 <label>ชื่อบัญชี</label>
-                <input type="text" defaultValue="Nail Salon Pro" />
+                <input type="text" defaultValue="Crystal Shine" />
 
                 <label>เลขบัญชี</label>
                 <input type="text" defaultValue="123-4-56789-0" />

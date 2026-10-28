@@ -1,7 +1,8 @@
 import axios from "axios";
 // let api = "http://127.0.0.1:8000";
 // let api = "http://localhost:5010";
-const api ="https://backend-gold-kappa-26.vercel.app"
+export const API_BASE_URL = "http://localhost:5010";
+const api = API_BASE_URL;
 /* =========================================================
    LOGIN (ใช้จริงกับ backend)
    POST /login
@@ -28,6 +29,46 @@ export async function GetLogin(identifier, password) {
     console.error("Login error:", error);
     const message =
       error.response?.data?.message || "เกิดข้อผิดพลาดขณะเข้าสู่ระบบ";
+    throw message;
+  }
+}
+
+/* =========================================================
+   ลืมรหัสผ่าน (Forgot Password)
+   POST /forgot-password  body: { identifier }
+   -- เว็บนี้ยังไม่มีระบบส่งอีเมลจริง backend จะส่ง reset_code กลับมาตรงๆ
+      (โหมดพัฒนา) ให้ frontend แสดงบนหน้าจอแทนการส่งอีเมล
+========================================================= */
+export async function ForgotPassword(identifier) {
+  try {
+    const response = await axios.post(
+      `${api}/forgot-password`,
+      { identifier },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    const message = error.response?.data?.error || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง";
+    throw message;
+  }
+}
+
+/* =========================================================
+   ตั้งรหัสผ่านใหม่ด้วยรหัสรีเซ็ต
+   POST /reset-password  body: { reset_code, new_password }
+========================================================= */
+export async function ResetPassword(resetCode, newPassword) {
+  try {
+    const response = await axios.post(
+      `${api}/reset-password`,
+      { reset_code: resetCode, new_password: newPassword },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Reset password error:", error);
+    const message = error.response?.data?.error || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง";
     throw message;
   }
 }

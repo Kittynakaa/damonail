@@ -4,7 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crystal Shine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Crystal Shine - ค้นพบสีเล็บและทรงเล็บที่ใช่สำหรับคุณ ผ่านเทคโนโลยี AI วิเคราะห์สีผิว พร้อมจองคิวร้านทำเล็บคุณภาพทั่วไทยได้ง่ายในไม่กี่ขั้นตอน" />
+    <meta name="theme-color" content="#d9789c" />
+
+    <!--
+      เปิดการเชื่อมต่อล่วงหน้ากับ Google Fonts เพื่อลดเวลาที่ฟอนต์บล็อกการแสดงผล
+      รวมฟอนต์ที่แต่ละหน้าเคยประกาศแยกกันผ่าน @import ในไฟล์ CSS ของตัวเอง (ซึ่งบล็อกการ
+      render และยิงซ้ำซ้อนหลายรอบ) มาไว้ที่เดียวตรงนี้ -- ฟอนต์/น้ำหนัก/สไตล์เดิมทั้งหมดยังอยู่ครบ
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      IBM Plex Sans Thai Looped คือฟอนต์หลักของทั้งเว็บ (ใช้กับ body ทุกหน้าแบบ !important
+      ใน index.css) แยกโหลดเป็นคำขอแรกสุดและให้ fetchpriority สูงสุด เพื่อให้ตัวอักษรส่วนใหญ่
+      ของเว็บไซต์ไม่ต้องรอฟอนต์หัวข้อ/ตกแต่งอื่นๆ ก่อน และใช้ display=optional (แทน swap) เพื่อ
+      ตัดปัญหาตัวอักษรสลับฟอนต์ทีหลังจนหน้าเว็บเด้ง (layout shift) บนเน็ตช้า -- ถ้าฟอนต์โหลดไม่ทัน
+      ภายในเสี้ยววินาทีแรก เบราว์เซอร์จะใช้ฟอนต์สำรองไปเลยแทนที่จะสลับทีหลัง
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500;600;700&display=optional" rel="stylesheet" fetchpriority="high" />
+
+    <!--
+      ฟอนต์หัวข้อ/ตกแต่งที่ใช้เฉพาะบางหน้า รวมเป็นคำขอเดียวแทนที่จะยิง @import แยกในแต่ละไฟล์ CSS
+      ใช้ display=optional เช่นกันเพื่อตัดปัญหา layout shift ตอนฟอนต์สลับทีหลัง
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+Thai:wght@200;300;400;500;600&family=Inter:wght@200;300;400;500;600&family=Tenor+Sans&display=optional" rel="stylesheet">
+
+    <!-- บอกเบราว์เซอร์ให้โหลดรูปภาพหลัก (LCP) ของหน้าแรกไว้ก่อนเพื่อความเร็ว -->
+    <link rel="preload" as="image" href="/Nailshop/model.jpg" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

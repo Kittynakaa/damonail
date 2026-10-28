@@ -3,6 +3,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* เดิมพึ่งพา class "container-1450" ที่มาจาก AddStore.css ซึ่งหน้านี้ไม่ได้
+     import เลยไม่มีผลอะไร ทำให้เนื้อหาชิดขอบจอ -- ใส่ max-width/padding ของตัวเอง
+     ให้ตรงกับระยะขอบของ navbar (padding: 16px 24px, width: min(1500px, 100%)) */
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  padding: 80px 24px;
+  box-sizing: border-box;
 }
 
 .reg-grid {
@@ -120,6 +127,55 @@
   font-size: 12px;
   margin-top: 15px;
   text-align: center;
+}
+
+/* ลืมรหัสผ่าน (Forgot Password) */
+.reg-link-btn {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.reg-link-btn:hover {
+  color: #111;
+}
+
+.reg-forgot-link {
+  margin: -12px 0 20px;
+  text-align: right;
+}
+
+.reg-forgot-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #666;
+  margin: 0 0 25px;
+}
+
+.reg-dev-mode-notice {
+  padding: 14px 16px;
+  background: #fffaf0;
+  border: 1px solid #eadfc4;
+  border-radius: 4px;
+  color: #7a6a3f;
+}
+
+.reg-dev-mode-notice strong {
+  color: #111;
+  letter-spacing: 2px;
+  font-size: 16px;
+}
+
+.reg-back-link {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
 }
 
 /* Full Button */

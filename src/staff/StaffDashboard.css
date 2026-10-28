@@ -1,0 +1,160 @@
+.staff-dashboard-page {
+  width: 100%;
+  min-width: 0;
+  font-family: "Prompt", sans-serif;
+}
+
+.staff-dash-header {
+  margin-bottom: 22px;
+}
+
+.staff-dash-header h1 {
+  color: #c06f8e;
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.staff-dash-header p {
+  color: #90707d;
+  margin: 6px 0 0;
+}
+
+.staff-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .staff-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.staff-card {
+  min-width: 0;
+  background: #fff;
+  padding: 18px 22px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.staff-stats-grid .staff-card {
+  margin-bottom: 0;
+}
+
+.staff-card h2 {
+  margin: 4px 0 0;
+  font-size: 1.6rem;
+  color: #111;
+}
+
+.staff-card-label {
+  color: #8f7380;
+  font-size: 0.85rem;
+  margin: 0 0 4px;
+}
+
+.staff-quicklinks-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.staff-quicklinks-row button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #f0d8e2;
+  background: #fff7fb;
+  color: #b76585;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.staff-quicklinks-row button:hover {
+  background: #ffeef5;
+}
+
+.staff-empty {
+  color: #9d8f96;
+  font-size: 0.9rem;
+}
+
+.staff-today-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.staff-today-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5e6ec;
+  font-size: 0.9rem;
+}
+
+.staff-today-list li:last-child {
+  border-bottom: none;
+}
+
+.staff-today-time {
+  font-weight: 700;
+  color: #c06f8e;
+  min-width: 52px;
+}
+
+.staff-today-customer {
+  min-width: 120px;
+}
+
+.staff-today-service {
+  flex: 1;
+  color: #8f7380;
+}
+
+.staff-dashboard-page .status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.staff-dashboard-page .status.pending {
+  background: #fff1be;
+  color: #c18700;
+}
+
+.staff-dashboard-page .status.confirmed {
+  background: #e6f7ea;
+  color: #2f9d57;
+}
+
+.staff-dashboard-page .status.done {
+  background: #e8efff;
+  color: #4b6fd3;
+}
+
+.staff-dashboard-page .status.canceled {
+  background: #ffe6ea;
+  color: #d95b74;
+}
+
+.staff-dashboard-page .status.reschedule {
+  background: #ffe9d6;
+  color: #c1701f;
+}

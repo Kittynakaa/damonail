@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Inter:wght@200;300;400;500&display=swap');
 
 :root {
   --bg-color: #fff9fc;
@@ -57,6 +56,30 @@
   margin-left: 15px;
   vertical-align: middle;
   color: #a35e79;
+}
+
+.st-hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.st-hero-rating {
+  color: #d63384;
+  font-weight: 600;
+}
+
+.st-hero-dot {
+  color: var(--border-fine);
+}
+
+.st-hero-icon {
+  vertical-align: -2px;
+  margin-right: 2px;
 }
 
 /* --- Image Gallery Section --- */
@@ -246,6 +269,28 @@
   text-align: center;
 }
 
+.st-review-more-btn {
+  display: block;
+  margin: 18px auto 0;
+  padding: 10px 26px;
+  border: 1px solid var(--border-fine);
+  border-radius: 999px;
+  background: #fff;
+  color: #b76384;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.st-review-more-btn:hover {
+  background: #fdeef3;
+}
+
+.st-review-less-btn {
+  margin-top: 10px;
+  color: #a98a95;
+}
+
 .st-review-top {
   display: flex;
   justify-content: space-between;
@@ -269,6 +314,79 @@
   font-size: 16px;
   letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+.st-review-form-card {
+  margin-bottom: 18px;
+}
+
+.st-review-form-card h3 {
+  margin: 0 0 14px;
+}
+
+.st-star-picker {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.st-star-pick {
+  font-size: 26px;
+  color: #e3d4da;
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.st-star-pick:hover {
+  transform: scale(1.1);
+}
+
+.st-star-pick.filled {
+  color: #e39ab5;
+  fill: #e39ab5;
+}
+
+.st-review-textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  border: 1px solid var(--border-fine);
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #7b6770;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+}
+
+.st-review-submit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #e9a7c1, #c76b8f);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.st-review-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.st-review-login-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #b76384;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 /* --- Sidebar --- */

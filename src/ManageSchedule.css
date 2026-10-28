@@ -4,23 +4,22 @@
     background: #fafafa;
     min-height: 100vh;
   }
-  
+
   /* Header */
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-    margin-left: 100px;
   }
   .header h1 {
     color: #ff6b98;
     font-size: 1.4rem;
-    margin-left: -20px;
+    margin: 0;
   }
   .header p {
     color: #777;
-    margin: 0;
+    margin: 4px 0 0;
   }
   .btn-add {
     background: #ff6b98;
@@ -35,83 +34,345 @@
   .btn-add:hover {
     background: #ff4b88;
   }
-  
-  /* Layout */
-  .schedule-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr;
-    gap: 24px;
-    margin-left: 100px;
-  }
-  .calendar-box,
-  .day-box,
-  .emp-box {
+  .btn-add.btn-logout {
     background: #fff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  }
-  
-  /* ตารางรายวัน */
-  .day-box h3,
-  .emp-box h3 {
     color: #ff4b88;
-    font-size: 1rem;
-    margin-bottom: 12px;
+    border: 1px solid #ff6b98;
+    box-shadow: none;
   }
-  .empty {
+  .btn-add.btn-logout:hover {
+    background: #fff0f6;
+  }
+
+  /* ===== Stat bar สรุปวันนี้ ===== */
+  .schedule-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 28px;
+  }
+
+  .sched-stat-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid #f7e4ec;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(255, 107, 152, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sched-stat-pill:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(255, 107, 152, 0.12);
+  }
+
+  .sched-stat-pill .stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ff4b88;
+  }
+
+  .sched-stat-pill .stat-label {
+    font-size: 0.78rem;
     color: #999;
+  }
+
+  .sched-stat-pill.available .stat-value { color: #28a745; }
+  .sched-stat-pill.leave .stat-value { color: #5b6ee8; }
+  .sched-stat-pill.absent .stat-value { color: #d9534f; }
+
+  @media (max-width: 1024px) {
+    .schedule-stats-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* ===== Layout หลัก: บน-ล่าง (ปฏิทิน / คิวงาน / สถานะพนักงาน) ===== */
+  .schedule-section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 10px rgba(255, 107, 152, 0.08);
+    margin-bottom: 24px;
+  }
+
+  .schedule-section h3 {
+    color: #ff4b88;
+    font-size: 1.05rem;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+
+  .empty {
     text-align: center;
+    color: #aaa;
+    padding: 40px 0;
+    font-size: 0.95rem;
   }
-  .day-box ul {
-    list-style: none;
+
+  /* ===== ปฏิทิน (ส่วนบน เต็มความกว้าง) ===== */
+  .calendar-box-wide {
+    box-shadow: none;
     padding: 0;
-    margin: 0;
+    border-radius: 0;
+    max-width: 640px;
+    margin: 0 auto;
   }
-  .day-box li {
+
+  .react-calendar {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    font-family: "Prompt", sans-serif;
+  }
+
+  .react-calendar__navigation {
     display: flex;
     justify-content: space-between;
-    padding: 6px 0;
-    font-size: 0.95rem;
-    border-bottom: 1px solid #f1f1f1;
+    align-items: center;
+    margin-bottom: 10px;
   }
-  .day-box .time {
+
+  .react-calendar__navigation button {
+    background: none;
+    border: none;
     color: #ff4b88;
     font-weight: 600;
+    font-size: 1.05rem;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: 0.2s;
   }
-  .day-box .emp {
-    color: #777;
-    font-size: 0.9rem;
+
+  .react-calendar__navigation button:hover {
+    background: #fff0f6;
   }
-  
-  /* รายชื่อพนักงาน */
-  .emp-box ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+  .react-calendar__month-view__weekdays {
+    font-size: 0.85rem;
+    color: #ff8fb3;
   }
-  .emp-box li {
+
+  .react-calendar__month-view__days__day {
+    border-radius: 12px !important;
+    padding: 14px 0 !important;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #444;
+    transition: all 0.2s ease;
+  }
+
+  .react-calendar__tile--now {
+    background: #fff0f6 !important;
+    color: #ff4b88 !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+  }
+
+  .react-calendar__tile--active {
+    background: linear-gradient(90deg, #ff6b98, #ff4b88) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(255, 107, 152, 0.3);
+    border-radius: 12px !important;
+    font-weight: 600;
+  }
+
+  .react-calendar__tile:hover {
+    background: #fff3f9 !important;
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: #ccc !important;
+  }
+
+  /* จุดแสดงว่ามีตารางงาน */
+  .react-calendar__tile.has-schedule {
+    position: relative;
+  }
+  .react-calendar__tile.has-schedule::after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #ff4b88;
+    border-radius: 50%;
+    margin: 4px auto 0;
+  }
+  .react-calendar__tile--active.has-schedule::after {
+    background: #fff;
+  }
+
+  /* ===== คิวงานของวันที่เลือก (ส่วนกลาง) ===== */
+  .queue-section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .queue-section-header h3 {
+    margin: 0;
+  }
+  .staff-filter {
+    min-width: 200px;
+  }
+
+  .queue-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .queue-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(180deg, #fff8fc 0%, #ffffff 100%);
+    border: 1px solid #f7e9f1;
+    border-left: 5px solid #ff6b98;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 10px rgba(255, 107, 152, 0.05);
+    transition: 0.25s;
+  }
+
+  .queue-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255, 107, 152, 0.1);
+  }
+
+  .queue-card-time {
+    color: #ff4b88;
+    font-weight: 700;
+    font-size: 1.05rem;
+    min-width: 58px;
+    flex-shrink: 0;
+  }
+
+  .queue-card-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .queue-card-customer {
+    color: #333;
+    font-weight: 600;
+    font-size: 0.98rem;
+  }
+
+  .queue-card-service {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 2px;
+  }
+
+  .queue-card-employee {
+    margin-top: 6px;
+  }
+
+  .queue-card-employee .emp {
+    font-size: 0.88rem;
+    color: #777;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .queue-card-employee .emp::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #ff6b98;
+    border-radius: 50%;
+  }
+
+  .queue-card-employee .emp-unassigned {
+    color: #d9534f;
+  }
+  .queue-card-employee .emp-unassigned::before {
+    background: #d9534f;
+  }
+
+  .queue-status-badge {
+    flex-shrink: 0;
+    padding: 5px 13px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .qstatus-pending   { background: #fff6e0; color: #d99000; }
+  .qstatus-confirmed { background: #eaeeff; color: #5b6ee8; }
+  .qstatus-done      { background: #e8f7ef; color: #28a745; }
+  .qstatus-cancelled { background: #fdeceb; color: #d9534f; }
+
+  /* ===== สถานะพนักงาน (ส่วนล่างสุด) ===== */
+  .status-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .staff-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .staff-status-card {
+    background: linear-gradient(180deg, #fff8fc 0%, #ffffff 100%);
+    border: 1px solid #f7e9f1;
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+
+  .staff-status-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .staff-name {
+    font-weight: 600;
+    color: #333;
     font-size: 0.95rem;
   }
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-  }
-  .status {
-    background: #f7f7f7;
-    padding: 2px 8px;
-    border-radius: 8px;
+
+  .staff-status-line {
     font-size: 0.85rem;
-    color: #555;
+    color: #777;
+    margin-top: 2px;
   }
-  
+
+  .staff-status-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .emp-avatar-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ffe8f3;
+    color: #ff4b88;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
   /* Modal Overlay */
   .modal-overlay {
     position: fixed;
@@ -123,7 +384,7 @@
     backdrop-filter: blur(4px);
     z-index: 9999;
   }
-  
+
   /* Modal Box */
   .modal {
     background: linear-gradient(180deg, #ffffff 0%, #fff8fc 100%);
@@ -180,197 +441,50 @@
   .cancel-btn:hover {
     background: #ddd;
   }
-  
-  /* ===== ตารางรายวัน (Day Schedule Box) ===== */
-.day-box {
-    background: #fff;
-    border-radius: 20px;
-    padding: 22px 24px;
-    box-shadow: 0 2px 10px rgba(255, 107, 152, 0.08);
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-  }
-  
-  .day-box h3 {
-    color: #ff4b88;
-    font-size: 1rem;
-    margin-bottom: 16px;
-    font-weight: 600;
-  }
-  
-  .empty {
-    text-align: center;
-    color: #aaa;
-    padding: 40px 0;
-    font-size: 0.95rem;
-  }
-  
-  /* รายการงานแต่ละรายการ */
-  .day-box ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .day-box li {
-    background: linear-gradient(180deg, #fff8fc 0%, #ffffff 100%);
-    border: 1px solid #f7e9f1;
-    border-left: 5px solid #ff6b98;
-    border-radius: 14px;
-    padding: 12px 14px;
-    box-shadow: 0 4px 10px rgba(255, 107, 152, 0.05);
-    display: flex;
-    flex-direction: column;
-    transition: 0.25s;
-  }
-  
-  .day-box li:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(255, 107, 152, 0.1);
-  }
-  
-  /* เวลา */
-  .day-box .time {
-    color: #ff4b88;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
-  
-  /* รายละเอียดงาน */
-  .day-box .task {
-    color: #444;
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
-  
-  /* พนักงาน */
-  .day-box .emp {
-    font-size: 0.9rem;
-    color: #777;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .day-box .emp::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #ff6b98;
-    border-radius: 50%;
-  }
-/* ===== ปรับสไตล์ react-calendar ===== */
-.calendar-box {
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px 24px;
-    box-shadow: 0 2px 10px rgba(255, 107, 152, 0.08);
-    font-family: "Prompt", sans-serif;
-  }
-  
-  /* ปรับขนาดและการจัดวาง */
-  .react-calendar {
-    width: 100% !important;
-    border: none !important;
-    background: transparent !important;
-    font-family: "Prompt", sans-serif;
-  }
-  
-  .react-calendar__navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .react-calendar__navigation button {
-    background: none;
-    border: none;
-    color: #ff4b88;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 10px;
-    transition: 0.2s;
-  }
-  
-  .react-calendar__navigation button:hover {
-    background: #fff0f6;
-  }
-  
-  /* ช่องวันที่ */
-  .react-calendar__month-view__days__day {
-    border-radius: 12px !important;
-    padding: 10px 0 !important;
-    font-weight: 500;
-    color: #444;
-    transition: all 0.2s ease;
-  }
-  
-  /* วันที่วันนี้ */
-  .react-calendar__tile--now {
-    background: #fff0f6 !important;
-    color: #ff4b88 !important;
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-  }
-  
-  /* วันที่เลือก */
-  .react-calendar__tile--active {
-    background: linear-gradient(90deg, #ff6b98, #ff4b88) !important;
-    color: #fff !important;
-    box-shadow: 0 4px 10px rgba(255, 107, 152, 0.3);
-    border-radius: 12px !important;
-    font-weight: 600;
-  }
-  
-  /* hover วัน */
-  .react-calendar__tile:hover {
-    background: #fff3f9 !important;
-  }
-  
-  /* วันที่จากเดือนอื่น */
-  .react-calendar__month-view__days__day--neighboringMonth {
-    color: #ccc !important;
-  }
-  
-  /* จุดแสดงว่ามีตารางงาน */
-  .react-calendar__tile.has-schedule::after {
-    content: "";
-    display: block;
-    width: 6px;
-    height: 6px;
-    background: #ff4b88;
-    border-radius: 50%;
-    margin: 4px auto 0;
-  }
-    
+
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  
-
 
   .assign-select {
     margin-top: 6px;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid #ff6b98;
     background: #fff;
+    color: #ff4b88;
     font-size: 13px;
     cursor: pointer;
+    transition: 0.2s ease;
   }
-  
+
+  .assign-select:hover {
+    background: #fff0f6;
+  }
+
   .assign-select:focus {
     outline: none;
     border-color: #e64ba5;
+  }
+
+  .assign-select.warning {
+    border-color: #d9534f;
+    color: #d9534f;
+    font-weight: 600;
+  }
+
+  .assign-select.warning:hover {
+    background: #fdeceb;
+  }
+
+  @media (max-width: 640px) {
+    .schedule-root {
+      padding: 18px;
+    }
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
   }

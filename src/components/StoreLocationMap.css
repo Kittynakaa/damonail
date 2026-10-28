@@ -1,0 +1,11 @@
+.store-location-map-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 16px;
+  background: #f6eef1;
+  color: #a98a95;
+  font-size: 14px;
+  border: 1px dashed #e3c9d2;
+}

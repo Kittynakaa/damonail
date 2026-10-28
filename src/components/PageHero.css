@@ -1,0 +1,91 @@
+/* หัวข้อมาตรฐานของทุกหน้า (ยกเว้น Home) -- ทุก selector ใช้ prefix ph- โดยเจตนา
+   เพื่อไม่ให้ชนกับ class เดิมของแต่ละหน้า (โปรเจกต์นี้โหลด CSS แบบ global ทั้งเว็บ) */
+
+.ph-hero {
+  padding: 120px 0 80px;
+  text-align: center;
+  position: relative;
+  background: radial-gradient(circle at top center, rgba(255, 226, 238, 0.9), transparent 34%);
+}
+
+.ph-hero-compact {
+  padding: 0 0 40px;
+  background: none;
+}
+
+.ph-hero-compact .ph-hero-inner {
+  padding: 0;
+}
+
+.ph-hero-inner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.ph-eyebrow {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #d97a9c;
+}
+
+.ph-title {
+  font-family: "Playfair Display", "Noto Sans Thai", serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 24px;
+  color: #8d5b6f;
+}
+
+.ph-lead {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 300;
+  color: #9a7d88;
+}
+
+.ph-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.ph-chip {
+  padding: 10px 25px;
+  border: 1px solid rgba(201, 118, 150, 0.22);
+  background: rgba(255, 255, 255, 0.88);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #5f4450;
+  border-radius: 50px;
+  box-shadow: 0 10px 26px rgba(225, 178, 200, 0.12);
+}
+
+@media (max-width: 720px) {
+  .ph-hero {
+    padding: 100px 0 60px;
+  }
+
+  .ph-hero-inner {
+    padding: 0 20px;
+  }
+
+  .ph-chips {
+    gap: 10px;
+  }
+
+  .ph-chip {
+    padding: 8px 18px;
+    font-size: 10px;
+  }
+}

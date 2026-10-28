@@ -1,0 +1,90 @@
+.cam-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.cam-modal {
+  background: #fff;
+  border: 1px solid #d8d2c6;
+  width: 100%;
+  max-width: 460px;
+  padding: 18px;
+}
+
+.cam-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+.cam-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #1a1a1a;
+  display: flex;
+}
+
+.cam-viewport {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: #111;
+  border: 1px solid #d8d2c6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cam-viewport video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cam-error {
+  color: #f2e5e5;
+  font-size: 13px;
+  text-align: center;
+  padding: 30px;
+  line-height: 1.7;
+}
+
+.cam-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cam-actions .btn-luxury {
+  flex: 1;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cam-retry {
+  background: #fff;
+  border: 1px solid #d8d2c6;
+  color: #1a1a1a;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}

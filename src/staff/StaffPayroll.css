@@ -1,0 +1,23 @@
+.staff-payroll-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .staff-payroll-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.staff-payroll-summary .staff-card-label {
+  color: #8f7380;
+  font-size: 0.85rem;
+  margin: 0 0 6px;
+}
+
+.staff-payroll-summary h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #111;
+}

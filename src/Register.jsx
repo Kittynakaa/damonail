@@ -3,11 +3,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { GetLogin } from "./callapi/call_api_Register.jsx";
+import { API_BASE_URL, GetLogin, ForgotPassword, ResetPassword } from "./callapi/call_api_Register.jsx";
 import { RegisterUser } from "./callapi/call_api_Register";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import "./Register.css";
+import PageHero from "./components/PageHero";
 
 
 
@@ -37,7 +37,7 @@ export default function Register() {
     if (!loginForm.id || !loginForm.pw) {
       return Swal.fire({
         icon: "error",
-        title: "Login Failed",
+        title: "เข้าสู่ระบบไม่สำเร็จ",
         text: "กรุณากรอกข้อมูลให้ครบถ้วน",
       });
     }
@@ -46,28 +46,108 @@ export default function Register() {
       const res = await GetLogin(loginForm.id, loginForm.pw);
 
       localStorage.setItem("user", JSON.stringify(res.user));
+      localStorage.setItem("token", res.token);
 
       await Swal.fire({
-        title: "Welcome Back",
+        title: "ยินดีต้อนรับกลับมา",
         icon: "success",
         timer: 1500,
         showConfirmButton: false,
       });
 
-      navigate("/home2");
+      // ช่างที่มีบัญชีเข้าสู่ระบบ -> พาไปหน้า "ตารางงานของฉัน" โดยตรง
+      // ผู้ดูแลระบบ -> พาไปหน้าแอดมินโดยตรง
+      if (res.user.role_id === 3 && res.user.employee_id) {
+        navigate("/MySchedule");
+      } else if (res.user.role_id === 4) {
+        navigate("/SysAdmin");
+      } else {
+        navigate("/home2");
+      }
     } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Login Failed",
+        title: "เข้าสู่ระบบไม่สำเร็จ",
         text: err,
       });
+    }
+  };
+
+  // ---------------- ลืมรหัสผ่าน (Forgot Password) ----------------
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotStep, setForgotStep] = useState("request"); // "request" | "reset"
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [devResetCode, setDevResetCode] = useState("");
+  const [resetForm, setResetForm] = useState({ code: "", newPw: "", confirmPw: "" });
+  const [forgotSubmitting, setForgotSubmitting] = useState(false);
+
+  const openForgotPassword = () => {
+    setForgotEmail(loginForm.id || "");
+    setForgotStep("request");
+    setDevResetCode("");
+    setResetForm({ code: "", newPw: "", confirmPw: "" });
+    setForgotMode(true);
+  };
+
+  const closeForgotPassword = () => {
+    setForgotMode(false);
+  };
+
+  const handleForgotRequest = async (e) => {
+    e.preventDefault();
+    if (!forgotEmail) {
+      return Swal.fire({ icon: "error", title: "กรุณากรอกอีเมลหรือเบอร์โทรศัพท์" });
+    }
+
+    setForgotSubmitting(true);
+    try {
+      const res = await ForgotPassword(forgotEmail);
+      setDevResetCode(res.reset_code);
+      setResetForm((prev) => ({ ...prev, code: res.reset_code }));
+      setForgotStep("reset");
+    } catch (err) {
+      Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err });
+    } finally {
+      setForgotSubmitting(false);
+    }
+  };
+
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!resetForm.code || !resetForm.newPw) {
+      return Swal.fire({ icon: "error", title: "กรุณากรอกรหัสรีเซ็ตและรหัสผ่านใหม่" });
+    }
+    if (resetForm.newPw.length < 6) {
+      return Swal.fire({ icon: "error", title: "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร" });
+    }
+    if (resetForm.newPw !== resetForm.confirmPw) {
+      return Swal.fire({ icon: "error", title: "รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน" });
+    }
+
+    setForgotSubmitting(true);
+    try {
+      await ResetPassword(resetForm.code, resetForm.newPw);
+      await Swal.fire({
+        icon: "success",
+        title: "ตั้งรหัสผ่านใหม่สำเร็จ",
+        text: "กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      setLoginForm({ id: forgotEmail, pw: "", remember: false });
+      setForgotMode(false);
+    } catch (err) {
+      Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err });
+    } finally {
+      setForgotSubmitting(false);
     }
   };
 
   // ---------------- GOOGLE LOGIN ----------------
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch("http://localhost:5010/login_google", {
+      const res = await fetch(`${API_BASE_URL}/login_google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,13 +159,13 @@ export default function Register() {
   
       const data = await res.json();
   
-      if (!res.ok) throw data.message;
+      if (!res.ok) throw new Error(data.message || "เข้าสู่ระบบด้วย Google ไม่สำเร็จ");
   
       // ✅ เก็บ user จาก backend
       localStorage.setItem("user", JSON.stringify(data.user));
   
       Swal.fire({
-        title: "Login Success",
+        title: "เข้าสู่ระบบสำเร็จ",
         icon: "success",
         timer: 1500,
         showConfirmButton: false,
@@ -97,8 +177,8 @@ export default function Register() {
       console.error(error);
       Swal.fire({
         icon: "error",
-        title: "Google Login Failed",
-        text: error,
+        title: "เข้าสู่ระบบด้วย Google ไม่สำเร็จ",
+        text: error.message || "ไม่สามารถเข้าสู่ระบบด้วย Google ได้",
       });
     }
   };
@@ -144,21 +224,21 @@ export default function Register() {
 
       if (response.success) {
         Swal.fire({
-          title: "Success",
-          text: "Welcome to the family!",
+          title: "สำเร็จ",
+          text: "ยินดีต้อนรับสู่ครอบครัวของเรา!",
           icon: "success",
         });
         switchTab("login");
       }
     } catch (error) {
-      setRegMessage("Registration Error");
+      setRegMessage(error.response?.data?.message || "สมัครสมาชิกไม่สำเร็จ");
     }
   };
 
   // ---------------- UI ----------------
   return (
     <div className="ag-root register-page">
-      <main className="container-1450 reg-main">
+      <main className="reg-main">
         <div className="reg-grid">
 
           {/* LEFT */}
@@ -170,17 +250,14 @@ export default function Register() {
               />
               <div className="img-overlay">
                 <p className="playfair-title">Crystal Shine</p>
-                <span>Discover Your Perfect Nails</span>
+                <span>ค้นพบเล็บที่ใช่สำหรับคุณ</span>
               </div>
             </div>
           </div>
 
           {/* RIGHT */}
           <div className="reg-form-side" data-aos="fade-left">
-            <header className="reg-header">
-              <span className="editorial-tag">Membership</span>
-              <h1 className="playfair-title">MY ACCOUNT</h1>
-            </header>
+            <PageHero compact eyebrow="สมาชิก" title="บัญชีของฉัน" />
 
             {/* Tabs */}
             <div className="reg-tabs-luxury">
@@ -188,22 +265,89 @@ export default function Register() {
                 className={activeTab === "login" ? "active" : ""}
                 onClick={() => switchTab("login")}
               >
-                SIGN IN
+                เข้าสู่ระบบ
               </button>
               <button
                 className={activeTab === "register" ? "active" : ""}
                 onClick={() => switchTab("register")}
               >
-                CREATE ACCOUNT
+                สมัครสมาชิก
               </button>
             </div>
 
             <div className="form-content-box">
-              {activeTab === "login" ? (
+              {activeTab === "login" && forgotMode ? (
+                forgotStep === "request" ? (
+                  <form onSubmit={handleForgotRequest} data-aos="fade-in">
+                    <p className="reg-forgot-desc">
+                      กรอกอีเมลหรือเบอร์โทรศัพท์ที่ใช้สมัครสมาชิก เพื่อขอรหัสรีเซ็ตรหัสผ่าน
+                    </p>
+
+                    <div className="reg-input-group">
+                      <label>อีเมลหรือเบอร์โทรศัพท์</label>
+                      <input
+                        type="text"
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                      />
+                    </div>
+
+                    <button className="btn-black-thin full-btn" type="submit" disabled={forgotSubmitting}>
+                      {forgotSubmitting ? "กำลังส่งคำขอ..." : "ขอรหัสรีเซ็ตรหัสผ่าน"}
+                    </button>
+
+                    <button type="button" className="reg-link-btn reg-back-link" onClick={closeForgotPassword}>
+                      ← กลับไปเข้าสู่ระบบ
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleResetSubmit} data-aos="fade-in">
+                    <p className="reg-forgot-desc reg-dev-mode-notice">
+                     เว็บนี้ยังไม่มีระบบส่งอีเมลจริง รหัสรีเซ็ตของคุณคือ{" "}
+                      <strong>{devResetCode}</strong> (หมดอายุใน 15 นาที)
+                    </p>
+
+                    <div className="reg-input-group">
+                      <label>รหัสรีเซ็ต</label>
+                      <input
+                        type="text"
+                        value={resetForm.code}
+                        onChange={(e) => setResetForm({ ...resetForm, code: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="reg-input-group">
+                      <label>รหัสผ่านใหม่</label>
+                      <input
+                        type="password"
+                        value={resetForm.newPw}
+                        onChange={(e) => setResetForm({ ...resetForm, newPw: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="reg-input-group">
+                      <label>ยืนยันรหัสผ่านใหม่</label>
+                      <input
+                        type="password"
+                        value={resetForm.confirmPw}
+                        onChange={(e) => setResetForm({ ...resetForm, confirmPw: e.target.value })}
+                      />
+                    </div>
+
+                    <button className="btn-black-thin full-btn" type="submit" disabled={forgotSubmitting}>
+                      {forgotSubmitting ? "กำลังตั้งรหัสผ่านใหม่..." : "ตั้งรหัสผ่านใหม่"}
+                    </button>
+
+                    <button type="button" className="reg-link-btn reg-back-link" onClick={closeForgotPassword}>
+                      ← กลับไปเข้าสู่ระบบ
+                    </button>
+                  </form>
+                )
+              ) : activeTab === "login" ? (
                 <form onSubmit={handleLoginSubmit} data-aos="fade-in">
 
                   <div className="reg-input-group">
-                    <label>Email or Phone</label>
+                    <label>อีเมลหรือเบอร์โทรศัพท์</label>
                     <input
                       type="text"
                       value={loginForm.id}
@@ -214,7 +358,7 @@ export default function Register() {
                   </div>
 
                   <div className="reg-input-group">
-                    <label>Password</label>
+                    <label>รหัสผ่าน</label>
                     <input
                       type="password"
                       value={loginForm.pw}
@@ -224,8 +368,12 @@ export default function Register() {
                     />
                   </div>
 
+                  <button type="button" className="reg-link-btn reg-forgot-link" onClick={openForgotPassword}>
+                    ลืมรหัสผ่าน?
+                  </button>
+
                   <button className="btn-black-thin full-btn" type="submit">
-                    SIGN IN
+                    เข้าสู่ระบบ
                   </button>
 
                   {/* 🔥 GOOGLE LOGIN */}
@@ -241,7 +389,7 @@ export default function Register() {
 
                   <div className="editorial-form-grid">
                     <div className="reg-input-group">
-                      <label>Firstname</label>
+                      <label>ชื่อ</label>
                       <input
                         type="text"
                         onChange={(e) =>
@@ -251,7 +399,7 @@ export default function Register() {
                     </div>
 
                     <div className="reg-input-group">
-                      <label>Lastname</label>
+                      <label>นามสกุล</label>
                       <input
                         type="text"
                         onChange={(e) =>
@@ -262,7 +410,7 @@ export default function Register() {
                   </div>
 
                   <div className="reg-input-group">
-                    <label>Email Address</label>
+                    <label>อีเมล</label>
                     <input
                       type="email"
                       onChange={(e) =>
@@ -272,7 +420,7 @@ export default function Register() {
                   </div>
 
                   <div className="reg-input-group">
-                    <label>Phone Number</label>
+                    <label>เบอร์โทรศัพท์</label>
                     <input
                       type="text"
                       onChange={(e) =>
@@ -283,7 +431,7 @@ export default function Register() {
 
                   <div className="editorial-form-grid">
                     <div className="reg-input-group">
-                      <label>Password</label>
+                      <label>รหัสผ่าน</label>
                       <input
                         type="password"
                         onChange={(e) =>
@@ -293,7 +441,7 @@ export default function Register() {
                     </div>
 
                     <div className="reg-input-group">
-                      <label>Confirm</label>
+                      <label>ยืนยันรหัสผ่าน</label>
                       <input
                         type="password"
                         onChange={(e) =>
@@ -304,7 +452,7 @@ export default function Register() {
                   </div>
 
                   <button className="btn-black-thin full-btn" type="submit">
-                    REGISTER NOW
+                    สมัครสมาชิกตอนนี้
                   </button>
 
                   {regMessage && <p className="reg-error">{regMessage}</p>}

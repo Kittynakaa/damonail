@@ -6,9 +6,10 @@ import {
 import { FiDownload } from "react-icons/fi";
 import "./StoreDashboard.css";
 import { useParams } from "react-router-dom";
-import { getStoreBookings, getAlerts } from "./callapi/call_api_booking.jsx";
+import { getStoreBookings, getAlerts, getAffectedBookingsForStore } from "./callapi/call_api_booking.jsx";
 import { getTopServices, getMonthlyIncomeByYear, getTopServicess } from "./callapi/call_api_service.jsx";
 import { getReviewsByStore } from "./callapi/call_api_store2.jsx";
+import { getEmployeeStatusToday } from "./callapi/call_api_employee.jsx";
 
 
 export default function StoreDashboard() {
@@ -66,6 +67,39 @@ export default function StoreDashboard() {
     };
 
     fetchTopServices();
+  }, [storeId]);
+
+  const [employeeStatus, setEmployeeStatus] = useState([]);
+  useEffect(() => {
+    if (!storeId) return;
+
+    const fetchEmployeeStatus = async () => {
+      try {
+        const data = await getEmployeeStatusToday(storeId);
+        setEmployeeStatus(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching employee status:", err);
+        setEmployeeStatus([]);
+      }
+    };
+
+    fetchEmployeeStatus();
+  }, [storeId]);
+
+  const [affectedToday, setAffectedToday] = useState({ affected_count: 0, affected_bookings: [] });
+  useEffect(() => {
+    if (!storeId) return;
+
+    const fetchAffected = async () => {
+      try {
+        const data = await getAffectedBookingsForStore(storeId);
+        setAffectedToday(data);
+      } catch (err) {
+        console.error("Error fetching affected bookings:", err);
+      }
+    };
+
+    fetchAffected();
   }, [storeId]);
 
   const [alerts, setAlerts] = useState([]);
@@ -224,6 +258,15 @@ export default function StoreDashboard() {
     ? (reviews.reduce((sum, review) => sum + Number(review.rating || 0), 0) / reviews.length).toFixed(1)
     : "0.0";
 
+  const employeeCounts = {
+    total: employeeStatus.length,
+    available: employeeStatus.filter((e) => e.current_status_id === 1).length,
+    working: employeeStatus.filter((e) => e.current_status_id === 2).length,
+    onBreak: employeeStatus.filter((e) => e.current_status_id === 3).length,
+    leave: employeeStatus.filter((e) => e.on_leave_today).length,
+    absent: employeeStatus.filter((e) => e.on_absent_today).length,
+  };
+
   const formatDelta = (current, previous) => {
     if (previous <= 0) {
       return current > 0 ? "+100%" : "0%";
@@ -248,6 +291,66 @@ export default function StoreDashboard() {
             </select>
             <button className="btn-export"><FiDownload /> Excel</button>
             <button className="btn-export"><FiDownload /> PDF</button>
+          </div>
+        </div>
+
+        {/* ===== Alert: คิวที่ได้รับผลกระทบจากพนักงานไม่มาทำงาน ===== */}
+        {affectedToday.affected_count > 0 && (
+          <div
+            className="card"
+            style={{
+              background: "#fff4e5",
+              border: "1px solid #ffcf8f",
+              color: "#a86500",
+              fontWeight: 600,
+              marginBottom: 16,
+            }}
+          >
+            ⚠️ มี {affectedToday.affected_count} คิวได้รับผลกระทบจากพนักงานไม่มาทำงาน
+            {" "}(ไปที่ "ตารางพนักงาน" เพื่อจัดการ)
+          </div>
+        )}
+
+        {/* ===== สถานะพนักงานวันนี้ ===== */}
+        <div className="stats-grid">
+          <div className="card">
+            <p className="label">พนักงานทั้งหมด</p>
+            <h2>{employeeCounts.total}</h2>
+          </div>
+          <div className="card">
+            <p className="label">พร้อมให้บริการ</p>
+            <h2>{employeeCounts.available}</h2>
+          </div>
+          <div className="card">
+            <p className="label">กำลังทำงาน</p>
+            <h2>{employeeCounts.working}</h2>
+          </div>
+          <div className="card">
+            <p className="label">พัก</p>
+            <h2>{employeeCounts.onBreak}</h2>
+          </div>
+          <div className="card">
+            <p className="label">ลา</p>
+            <h2>{employeeCounts.leave}</h2>
+          </div>
+          <div className="card">
+            <p className="label">ไม่มาทำงานวันนี้</p>
+            <h2>{employeeCounts.absent}</h2>
+          </div>
+        </div>
+
+        <div className="stats-grid">
+          <div className="card">
+            <p className="label">คิวทั้งหมดวันนี้</p>
+            <h2>{bookingsToday.length}</h2>
+          </div>
+          <div className="card">
+            <p className="label">คิวที่ได้รับผลกระทบ</p>
+            <h2>{affectedToday.affected_count}</h2>
+          </div>
+          <div className="card">
+            <p className="label">คิวที่รอเปลี่ยนช่าง</p>
+            <h2>{affectedToday.affected_count}</h2>
           </div>
         </div>
 

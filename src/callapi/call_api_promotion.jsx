@@ -1,7 +1,14 @@
 import axios from "axios";
 
-// const api = "http://localhost:5010";
-const api ="https://backend-gold-kappa-26.vercel.app"
+const api = "http://localhost:5010";
+
+export async function getAllPromotions() {
+  const response = await axios.get(`${api}/promotion`, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+}
+
 export async function getPromotionsByStore(storeId) {
   const response = await axios.get(`${api}/promotion/store/${storeId}`, {
     headers: { "Content-Type": "application/json" },

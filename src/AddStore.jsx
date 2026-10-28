@@ -1,14 +1,31 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { registerStore } from "./callapi/call_api_addstore.jsx";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./AddStore.css";
 import { getTypeServices } from "./callapi/call_api_typeservice.jsx";
+import PageHero from "./components/PageHero";
+import { getStoredUser } from "./callapi/auth";
+import StoreLocationMap from "./components/StoreLocationMap";
 
 export default function AddStore() {
   const navigate = useNavigate();
   const [typeServices, setTypeServices] = useState([]);
+
+  useEffect(() => {
+    const user = getStoredUser();
+    if (user?.role_id === 3 && user?.employee_id) {
+      Swal.fire({
+        icon: "info",
+        title: "ไม่สามารถเปิดร้านได้",
+        text: "คุณเป็นพนักงานของร้านอยู่ กรุณาให้เจ้าของร้านลบบัญชีพนักงานของคุณออกก่อน จึงจะเปิดร้านเองได้",
+        confirmButtonColor: "#d9789c",
+      }).then(() => navigate("/UserProfile"));
+    }
+  }, [navigate]);
+
   useEffect(() => {
     async function loadTypes() {
       try {
@@ -45,7 +62,9 @@ export default function AddStore() {
       province: "",
       district: "",
       subdistrict: "",
-      postal_code: ""
+      postal_code: "",
+      latitude: "",
+      longitude: "",
     },
   });
 
@@ -86,6 +105,12 @@ export default function AddStore() {
     const found = subdistricts.find(t => t.subdistrictNameTh === val);
     updateAddr({ subdistrict: val, postal_code: found ? found.postalCode : "" });
   };
+
+  // ===== ปักหมุดตำแหน่งร้านบนแผนที่ =====
+  const DEFAULT_MAP_CENTER = { lat: 13.7563, lng: 100.5018 }; // กรุงเทพฯ
+  const mapLat = store.address.latitude !== "" ? Number(store.address.latitude) : DEFAULT_MAP_CENTER.lat;
+  const mapLng = store.address.longitude !== "" ? Number(store.address.longitude) : DEFAULT_MAP_CENTER.lng;
+  const handlePinChange = ({ lat, lng }) => updateAddr({ latitude: lat.toFixed(6), longitude: lng.toFixed(6) });
 
   // Image Logic
   const imgFileRef = useRef(null);
@@ -136,8 +161,9 @@ export default function AddStore() {
         zip: store.address.postal_code || "", // ✅ ใช้ postal_code
         recommend_text: store.recommendText || "",
         open_time: store.openTime || "10:00",          // ✅ backend ต้องการ open_time
-        close_time: store.closeTime || "20:00"         // ✅ backend ต้องการ close_time
-
+        close_time: store.closeTime || "20:00",         // ✅ backend ต้องการ close_time
+        latitude: store.address.latitude || "",
+        longitude: store.address.longitude || "",
       },
       tags: [],
       services: store.services.map(s => ({
@@ -175,14 +201,12 @@ export default function AddStore() {
   };
   return (
     <div className="ag-root nf-add-page">
+      <PageHero
+        eyebrow="พาร์ตเนอร์ธุรกิจ"
+        title="ลงทะเบียนร้านของคุณ"
+        description="เข้าร่วมเครือข่ายร้านทำเล็บของ Crystal Shine เปิดร้านให้ลูกค้าค้นพบและจองคิวได้ในไม่กี่ขั้นตอน"
+      />
       <main className="container-1450">
-
-        {/* Header สไตล์นิตยสาร */}
-        <header className="ag-header-editorial" data-aos="fade-down">
-          <span className="editorial-tag">Business Partnership</span>
-          <h1 className="playfair-title">Registration</h1>
-
-        </header>
 
         <div className="ag-main-layout">
 
@@ -191,8 +215,8 @@ export default function AddStore() {
             <div className="preview-sticky-wrapper" data-aos="fade-right">
               <div className="search-card-editorial">
                 <div className="st-img-wrapper">
-                  <img src={store.images[0] || "https://i.pinimg.com/736x/8a/8d/89/8a8d8916bd3a8a2723390d870269d7fc.jpg"} alt="Preview" />
-                  <span className="badge-luxury">STUDIO PREVIEW</span>
+                  <img src={store.images[0] || "https://i.pinimg.com/736x/8a/8d/89/8a8d8916bd3a8a2723390d870269d7fc.jpg"} alt="ตัวอย่างร้าน" />
+                  <span className="badge-luxury">ตัวอย่างร้าน</span>
                 </div>
                 <div className="st-content">
                   <h3 className="playfair-name">{store.name || "ชื่อร้านของคุณ"}</h3>
@@ -215,14 +239,14 @@ export default function AddStore() {
 
               {/* ส่วนที่ 1: ข้อมูลทั่วไป */}
               <div className="form-section">
-                <h2 className="section-form-title">Basic Details</h2>
+                <h2 className="section-form-title">ข้อมูลทั่วไป</h2>
                 <div className="editorial-form-grid">
                   <div className="input-group full-width">
-                    <label>Studio Name (ชื่อร้าน)</label>
+                    <label>ชื่อร้าน</label>
                     <input type="text" placeholder="ระบุชื่อร้านของคุณ" value={store.name} onChange={(e) => update({ name: e.target.value })} />
                   </div>
                   <div className="input-group full-width">
-                    <label>Recommend Text / Studio Description (คำแนะนำ/รายละเอียดร้าน)</label>
+                    <label>คำแนะนำ/รายละเอียดร้าน</label>
                     <textarea
                       className="editorial-underline textarea-editorial"
                       placeholder="เขียนจุดเด่นร้าน บรรยากาศ  หรือคำแนะนำ"
@@ -232,15 +256,15 @@ export default function AddStore() {
                     />
                   </div>
                   <div className="input-group">
-                    <label>Phone Number</label>
+                    <label>เบอร์โทรศัพท์</label>
                     <input type="text" placeholder="08x-xxx-xxxx" value={store.phone} onChange={(e) => update({ phone: e.target.value })} />
                   </div>
                   <div className="input-group">
-                    <label>Email Address</label>
+                    <label>อีเมล</label>
                     <input type="email" placeholder="example@mail.com" value={store.email} onChange={(e) => update({ email: e.target.value })} />
                   </div>
                   <div className="input-group">
-                    <label>Starting Price (ราคาเริ่มต้น ฿)</label>
+                    <label>ราคาเริ่มต้น (฿)</label>
                     <input type="number" placeholder="890" value={store.priceFrom} onChange={(e) => update({ priceFrom: e.target.value })} />
                   </div>
                 </div>
@@ -248,40 +272,52 @@ export default function AddStore() {
 
               {/* ส่วนที่ 2: ที่ตั้งและเวลา */}
               <div className="form-section">
-                <h2 className="section-form-title">Location  And Opening Hours</h2>
+                <h2 className="section-form-title">ที่ตั้งและเวลาเปิด-ปิด</h2>
                 <div className="editorial-form-grid">
                   <div className="input-group full-width">
-                    <label>Street Address (ที่อยู่/ถนน/เลขที่บ้าน)</label>
+                    <label>ที่อยู่/ถนน/เลขที่บ้าน</label>
                     <input type="text" placeholder="ระบุที่ตั้งโดยละเอียด" value={store.address.street} onChange={(e) => updateAddr({ street: e.target.value })} />
                   </div>
                   <div className="input-group">
-                    <label>Province (จังหวัด)</label>
+                    <label>จังหวัด</label>
                     <select value={store.address.province} onChange={(e) => handleProvinceChange(e.target.value)}>
                       <option value="">เลือกจังหวัด</option>
                       {provinces.map(p => <option key={p} value={p}>{p}</option>)}
                     </select>
                   </div>
                   <div className="input-group">
-                    <label>District (อำเภอ/เขต)</label>
+                    <label>อำเภอ/เขต</label>
                     <select value={store.address.district} onChange={(e) => handleDistrictChange(e.target.value)} disabled={!store.address.province}>
                       <option value="">เลือกอำเภอ</option>
                       {districts.map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
                   </div>
                   <div className="input-group">
-                    <label>Sub-district (ตำบล/แขวง)</label>
+                    <label>ตำบล/แขวง</label>
                     <select value={store.address.subdistrict} onChange={(e) => handleSubdistrictChange(e.target.value)} disabled={!store.address.district}>
                       <option value="">เลือกตำบล</option>
                       {subdistricts.map(t => <option key={t.id} value={t.subdistrictNameTh}>{t.subdistrictNameTh}</option>)}
                     </select>
                   </div>
                   <div className="input-group">
-                    <label>Open Time</label>
+                    <label>เวลาเปิด</label>
                     <input type="time" value={store.openTime} onChange={(e) => update({ openTime: e.target.value })} />
                   </div>
                   <div className="input-group">
-                    <label>Close Time</label>
+                    <label>เวลาปิด</label>
                     <input type="time" value={store.closeTime} onChange={(e) => update({ closeTime: e.target.value })} />
+                  </div>
+                  <div className="input-group">
+                    <label>ละติจูด (Latitude)</label>
+                    <input type="number" step="any" placeholder="เช่น 16.48408" value={store.address.latitude} onChange={(e) => updateAddr({ latitude: e.target.value })} />
+                  </div>
+                  <div className="input-group">
+                    <label>ลองจิจูด (Longitude)</label>
+                    <input type="number" step="any" placeholder="เช่น 102.82000" value={store.address.longitude} onChange={(e) => updateAddr({ longitude: e.target.value })} />
+                  </div>
+                  <div className="input-group full-width">
+                    <label>ปักหมุดตำแหน่งร้าน (ลากหมุดหรือคลิกบนแผนที่เพื่อปรับตำแหน่ง)</label>
+                    <StoreLocationMap lat={mapLat} lng={mapLng} draggable onChange={handlePinChange} height="280px" />
                   </div>
                 </div>
               </div>
@@ -289,8 +325,8 @@ export default function AddStore() {
               {/* ส่วนที่ 3: จัดการบริการ (Services) */}
               <div className="form-section">
                 <div className="section-flex-header">
-                  <h2 className="section-form-title">Service Menu</h2>
-                  <button className="editorial-link-btn" onClick={addSvc}>+ Add New Service</button>
+                  <h2 className="section-form-title">เมนูบริการ</h2>
+                  <button className="editorial-link-btn" onClick={addSvc}>+ เพิ่มบริการใหม่</button>
                 </div>
                 <div className="services-manager">
                   {store.services.length === 0 && <p className="empty-note">ยังไม่มีรายการบริการ กรุณาเพิ่มอย่างน้อย 1 รายการ</p>}
@@ -311,7 +347,7 @@ export default function AddStore() {
                         disabled={typeServices.length === 0}
                       >
                         {typeServices.length === 0 ? (
-                          <option value="">Loading...</option>
+                          <option value="">กำลังโหลด...</option>
                         ) : (
                           typeServices.map((t) => (
                             <option key={t.type_id} value={t.type_id}>
@@ -328,10 +364,10 @@ export default function AddStore() {
 
               {/* ส่วนที่ 4: รูปภาพสตูดิโอ */}
               <div className="form-section">
-                <h2 className="section-form-title">Studio Gallery</h2>
+                <h2 className="section-form-title">รูปภาพร้าน</h2>
                 <div className="ag-upload-area" onClick={() => imgFileRef.current.click()}>
                   <div className="upload-content">
-                    <p>Click to Upload Studio Atmosphere Images</p>
+                    <p>คลิกเพื่ออัปโหลดรูปบรรยากาศร้าน</p>
                     <span>รองรับไฟล์ .jpg, .png (สูงสุด 5 รูป)</span>
                   </div>
                   <input ref={imgFileRef} type="file" multiple style={{ display: 'none' }} onChange={(e) => handleFiles(e.target.files)} />
@@ -339,7 +375,7 @@ export default function AddStore() {
                 <div className="ag-thumbs-grid">
                   {store.images.map((img, i) => (
                     <div key={i} className="thumb-item">
-                      <img src={img} alt="Gallery" />
+                      <img src={img} alt="รูปร้าน" />
                       <button className="remove-thumb" onClick={() => removeImg(i)}>✕</button>
                     </div>
                   ))}
@@ -349,7 +385,7 @@ export default function AddStore() {
               {/* ปุ่มบันทึก */}
               <div className="form-footer">
                 <button className="btn-black-thin full-btn" onClick={saveStore}>
-                  PUBLISH STUDIO TO PLATFORM
+                  เผยแพร่ร้านลงแพลตฟอร์ม
                 </button>
               </div>
 

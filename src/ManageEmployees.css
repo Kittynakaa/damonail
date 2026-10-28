@@ -9,6 +9,57 @@
     justify-content: center;
     font-weight: 600;
     margin: 0 auto;
+    transition: transform 0.2s ease;
+  }
+
+  tr:hover .avatar {
+    transform: scale(1.08);
+  }
+
+  .employee-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .stat-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid #f7e4ec;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(255, 107, 152, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .stat-pill:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(255, 107, 152, 0.12);
+  }
+
+  .stat-pill .stat-value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #ff4b88;
+  }
+
+  .stat-pill .stat-label {
+    font-size: 0.78rem;
+    color: #999;
+  }
+
+  .stat-pill.available .stat-value { color: #28a745; }
+  .stat-pill.working .stat-value { color: #f0a500; }
+  .stat-pill.leave .stat-value { color: #6c8ef5; }
+  .stat-pill.absent .stat-value { color: #d9534f; }
+
+  @media (max-width: 900px) {
+    .employee-stats-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   
   .btn-export {
@@ -119,9 +170,22 @@
     font-size: 0.95rem;
   }
   .service-table th, .service-table td {
-    padding: 10px 8px;
+    padding: 12px 10px;
     border-bottom: 1px solid #f1f1f1;
     text-align: left;
+  }
+  .service-table th {
+    color: #b5788f;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .service-table tbody tr {
+    transition: background 0.18s ease;
+  }
+  .service-table tbody tr:hover {
+    background: #fff8fb;
   }
   .cat {
     background: #fff0f6;
@@ -213,8 +277,58 @@
         0 10px 30px rgba(255, 107, 152, 0.25),
         0 4px 16px rgba(16, 24, 40, 0.08);
       display: block;
+      overflow-y: auto;
       z-index: 1000000 !important;
       animation: popupIn 0.3s ease forwards;
+    }
+
+    /* ===== ส่วนขยาย: ทักษะ / เวลาทำงาน / สถานะ ===== */
+    .modal-section-title {
+      margin: 16px 0 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ff6b98;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .skill-checklist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skill-checklist label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      font-size: 0.85rem;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 4px 8px;
+    }
+    .work-hours-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 0.85rem;
+    }
+    .work-hours-row .day-label {
+      width: 64px;
+      flex-shrink: 0;
+      color: #555;
+    }
+    .work-hours-row input[type="time"] {
+      width: auto;
+      margin-top: 0;
+      padding: 6px 8px;
+    }
+    .status-select {
+      width: auto !important;
+      margin-top: 0 !important;
+      padding: 4px 8px !important;
+      font-size: 0.8rem !important;
     }
     
     /* ขนาดเล็กสำหรับ modal ลบ */

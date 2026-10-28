@@ -196,25 +196,48 @@ export default function ManageReviews() {
         {/* ===== Modal ตอบกลับรีวิว ===== */}
         {replying &&
           ReactDOM.createPortal(
-            <div className="modal-overlay" onClick={() => setReplying(null)}>
-              <div className="modal small" onClick={(e) => e.stopPropagation()}>
-                <h3>ตอบกลับรีวิว</h3>
-                <p><strong>ลูกค้า:</strong> {replying.name}</p>
-                <p><strong>คะแนน:</strong> {"⭐".repeat(replying.rating)}</p>
-                <p><strong>รีวิว:</strong> {replying.text}</p>
+            <div className="review-reply-overlay" onClick={() => setReplying(null)}>
+              <div className="review-reply-modal" onClick={(e) => e.stopPropagation()}>
+                <div className="review-reply-header">
+                  <h3>ตอบกลับรีวิว</h3>
+                  <button
+                    className="review-reply-close"
+                    type="button"
+                    onClick={() => setReplying(null)}
+                    aria-label="ปิด"
+                  >
+                    ×
+                  </button>
+                </div>
 
-                <label>การตอบกลับของคุณ</label>
+                <div className="review-reply-meta">
+                  <div className="review-meta-row">
+                    <span className="review-meta-label">ลูกค้า</span>
+                    <span className="review-meta-value">{replying.name}</span>
+                  </div>
+                  <div className="review-meta-row">
+                    <span className="review-meta-label">คะแนน</span>
+                    <span className="review-meta-stars">{"⭐".repeat(replying.rating)}</span>
+                  </div>
+                  <div className="review-quote-box">
+                    <span className="review-meta-label">รีวิวจากลูกค้า</span>
+                    <p>{replying.text}</p>
+                  </div>
+                </div>
+
+                <label className="review-reply-label">การตอบกลับของคุณ</label>
                 <textarea
+                  className="review-reply-textarea"
                   placeholder="พิมพ์คำตอบของคุณที่นี่..."
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                 ></textarea>
 
-                <div className="modal-actions">
-                  <button className="cancel-btn" onClick={() => setReplying(null)}>
+                <div className="review-reply-actions">
+                  <button className="review-reply-cancel" onClick={() => setReplying(null)}>
                     ยกเลิก
                   </button>
-                  <button className="save-btn" onClick={handleSendReply}>
+                  <button className="review-reply-submit" onClick={handleSendReply}>
                     ส่งคำตอบ
                   </button>
                 </div>
